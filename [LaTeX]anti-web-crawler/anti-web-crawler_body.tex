@@ -206,6 +206,25 @@ Experiments were performed with threshold set to 30, and the crawler set consist
 This is based on NASA traffic data in 1995, and can be applied to more or less crawler sets depending on the number of items the site has or the length of the long tail.
 False positives occurred in 8 out of 6 matching data and 6 IPs were recognized as crawler nodes except duplicate detection. The number of requests generated per month for each IP is as follows.
 
+
+\begin{table}
+  \caption{IP and domains generated requests}
+  \label{tab:freq}
+  \begin{tabular}{ccl}
+    \toprule
+    IP or domain&Port\\
+    \midrule
+    156.80.168.122 & 117\\
+    163.205.180.17 & 564\\
+    dwkm206.usa1.com & 167\\
+    jalisco.engr.ucdavis.edu & 424\\
+    jbiagioni.npt.nuwc.navy.mil & 2124\\
+    sputnix.cas.und.nodak.edu & 101\\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+
 156.80.168.122 and sputnix.cas.und.nodak.edu, which generated relatively few requests, were detected as crawler nodes because the requests of these IPs were concentrated on a certain date, 29.7\% of them were in the long-tail area Of the respondents.
 
 \end{enumerate}
@@ -234,23 +253,21 @@ In order to apply the results of this paper more securely to actual services, it
 % REFERENCES
 %
 \section{REFERENCES}
-ad
+[1]	M.V Simkin and V.P. Roychowdhury, “A theory of web traffic” https://arxiv.org/pdf/0711.1235.pdf
+\newline[2] Density Estimation for Statistics and Data Analysis
+\newline[3] Explaining World Wide Web Traffic Self-Similarity
+\newline[4] Research on Detection Algorithm of WEB Crawler
+\newline[5] Design and Implementation of Scalable, Fully Distributed Web Crawler for a Web Search Engine
+\newline[6] Design and Implementation of a Distributed Crawler and Filtering Processor
+\newline[7] URL Assignment Algorithm of Crawler in Distributed System Based on Hash
+\newline[8] Design and Implementation of a High-Performance Distributed Web Crawler
+\newline[9] Feature evaluation for web crawler detection with data mining techniques
+\newline[10] Crawler Detection: A Bayesian Approach
+\newline[11] Real-time Web Crawler Detection
+[12] An investigation of web crawler behavior: characterization and metrics
 
-% ACKs
-\begin{acks}
-  The authors would like to thank Dr. Yuhua Li for providing the
-  MATLAB code of the \textit{BEPS} method.
-
-  The authors would also like to thank the anonymous referees for
-  their valuable comments and helpful suggestions. The work is
-  supported by the \grantsponsor{GS501100001809}{National Natural
-    Science Foundation of
-    China}{http://dx.doi.org/10.13039/501100001809} under Grant
-  No.:~\grantnum{GS501100001809}{61273304}
-  and~\grantnum[http://www.nnsf.cn/youngscientists]{GS501100001809}{Young
-    Scientists' Support Program}.
-\end{acks}
 
 % Bibliography
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-bibliography}
+\bibliography{sambib}
+
