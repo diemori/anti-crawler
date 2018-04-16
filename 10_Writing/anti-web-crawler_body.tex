@@ -2,10 +2,9 @@
 % Introduction
 %
 \section{Introduction}
-Data utilization and analysis are no longer the domain of data mining or analysts, and it has become a fundamental skill from students to researchers. 
-In order to utilize the data, it is necessary to retain the data first, but the required data does not always exist in the form of the completed data set. Therefore, in many cases, you need to collect the data you need through web crawling.
-There are two problems. One is that web service data distribution method can be changed through updating (crawler must be updated to reflect the structure change of input data), and the other is to introduce anti-crawling method in some web services the crawler will spend a lot of time developing the crawler.
-In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti - crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
+Web-crawling is used for collecting data in various fields. Some web-crawlers collect data even though the site is preventing crawlers by robot.txt. This can have a serious impact on the availability of the target service. These web-crawlers modify the header value, distribute IP to masquerade as if they are legitimated users to prevent themselves from detection.
+It is also prohibited to duplicate an entire dataset, even if the service permits viewing of individual data. However, malicious distributed web-crawlers browse and replicate the entire data of the service.
+In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti-crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
 
 
 
