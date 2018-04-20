@@ -6,84 +6,36 @@ Web-crawling is used for collecting data in various fields. Some web-crawlers co
 It is also prohibited to duplicate an entire dataset, even if the service permits viewing of individual data. However, malicious distributed web-crawlers browse and replicate the entire data of the service.
 In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti-crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
 
-
-
 %
 % Back Ground
 % with 2 subsections
 %
-\section{Back Ground}
+\section{Related Works}
 \begin{enumerate}
-\item Http Archive
-\newline Http Archive is a file format that stores network logs obtained through a built-in developer tool for web browsers such as Internet Explorer and Chrome. Network logs are stored as a .har extension files with JSON format. The HAR file consists of metadata about the log itself and entries data for request and response contents. Metadata includes information such as browser type, version, and creation time. In the entries section, start time, time required, and request and response data are included for each entry.
-The request and response items in the entry contain all the data that can be found through the developer tool. This means that the developer can obtain the same amount of information as the real-time monitoring of the actual site behavior by checking the har logs. Furthermore, by parsing the har logs, the data necessary for crawler development is automatically extracted.
-\newline
-\item Power Law
-\newline 
-According to the rule of thumb, when the items are sorted in order of frequency of use, the frequency of use decreases exponentially every time the rank decreases. This is also common for web traffic, and most web traffic is focused on some frequently used items. In this paper, we also introduce a technique for identifying crawler sets using items in the long-tail region, assuming that web traffic follows the power law.
-\end{enumerate}
 
-
-
-%
-% GENERATING CRAWLING LIBRARY:HAR2LIB
-% with 2 subsections
-%
-\section{Generating Crawling Library:HAR2LIB}
-In this chapter, we introduce the har2lib package which generates the crawling library code by parsing the har log file as an example of Intelligent Crawler.
-
-\subsection{Parsing HAR Files}
-HAR2LIB provides the harlib class. When you create a class object, it loads the har log file and then parses it. Parsing can be divided into exception handling, header analysis, and URL analysis.
-
-\subsection{Generating Crawling Library}
-When parsing is complete, HAR2LIB calls the internal \newline\verb|harlib._gen_py()| method to create a python class that contains a crawling method for the site. Next, the request header information is stored in a dict form inside the method so that the HTTP header can be set to be the same as that transmitted from the browser. The generated class will only contain the necessary methods for crawling, and actually implement the business logic that calls it. This is because the crawling data coding part and the crawling scenario implementation part are separate issues.
-
-
-
-%
-% ANTI-CRAWLING METHODS AND COUNTER SCENARIO
-% with 2 subsections
-%
-\section{ANTI-CRAWLING METHODS AND COUNTER SCENARIO}
-Although Harlib does not present the crawling scenario directly, there are features that help create a crawling scenario, such as an automated dealy. In this chapter, we introduce the anti-crawling technique to detect and respond to the crawler and the bypassing technique.
-
-\subsection{Anti-Crawling Methods}
-Detecting crawlers that perform excessive crawling on Web services and performing blocking automatically are very important for service management and intellectual property protection. This section introduces the known anti-crawling techniques.
-
-
-
-\begin{enumerate}
 \item HTTP Header Check
-\newline For a typical crawler, do not use the http header used by the browser. The server distinguishes the normal user from the crawler by checking the request header from the client and checking whether the value of User-Agent is normally included.
+\newline A basic crawler will send requests without modifying its header information. And web servers can distinguishes a legitimate user from a crawler by checking the request header, especially User-Agent value has been set properly. This header checking method is a basic anti-crawling method.
+But if a crawler attempts to masquerade itself as a legitimate user, it will replay the header information from the web browser or form the http header information similar to a browser. This makes it difficult for a web server to determine whether a client is a crawler or a legitimate user by simply checking the request header.
 \newline
-\item Access Frequency Recognition
+
+\item Access Pattern based Anti-Crawling
+\newline
+Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding could be regarded as a crawler. 
+An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user.
+In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie.
+Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs.[Inwoo Ro] 
 \newline 
-An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server must process only a large number of consecutive calls to specific resources. For example, suppose you are an attacker attempting to replicate all the data of a Web service that has real estate transfer data for 5.6 million copies in Korea. When the web service retrieves the lot number, it passes the html, js, and css files to the client and dynamically completes the data that fills the html table form with ajax call. The attacker can implement only the ajax call with a script such as python, and obtain the data from the public address list and request data to the server in parallel. If you are a careful attacker, you will not get close to the performance limit of the server, but if not, you will parallelize the collection process to get the data you want as soon as possible.
-\newline
-\item Access Pattern Recognition
-\newline
-Access pattern recognition is an anti-crawling method through dynamic analysis in addition to the above access frequency recognition. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding IP is blocked. In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie. Some requests can not be made separately.
-\end{enumerate}
-
-
-\subsection{Anti-Cralwer Counter Method}
-When using the intelligent Crawler library created through har2lib described in the previous chapter 3, the following three anti-crawling methods can be used as follows. The distributed crawler using all of the techniques 1 to 3 can not be defended by the anti-crawling technique described above.
-
-
-
-\begin{enumerate}
-\item Request Header Replay
-\newline All request methods generated by har2lib automatically mount the same http request header as requested by a normal browser. Web services can not distinguish between crawlers and browsers with http header verifications.
-\newline
-\item Access Frequency Auto Configuration
+\item Access Frequency based Anti-Crawling
 \newline 
-har2lib sets the automated dealy time value for each method using the actual time data for each method in the har parsing process. All methods manipulate the delay, which is actually taken, through the sleep function when the auto dealy option is set to True. After the configuration is applied, it is possible to configure a parallel crawling network consisting of units that do not exceed the access frequency limit per IP when combined with multiple IP proxy servers.
-\newline
-\item Access Pattern Replay
-\newline
-Although har2lib does not write the crawling scenario directly, it supports a guide to the access pattern that helps scenarios that only replicate the ajax call clone to bypass the approach pattern. Since the harlog itself records normal access patterns, it is possible to summarize the access patterns in a separate chart.
-\end{enumerate}
+Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold limit of access count in an unit time. If a client with a specific IP requests exceeds this limit in pre-defined time, the web server determines that this IP as a crowler node.
 
+This method has two well known problems. 
+First, it has vulnerability against distributed crawler. If an attackers use distributed crawler such as Crawlera, access rate for a crawler node IP will be reduced enough to bypass threshold limit.
+Second, it could raise false positive error if many users share a public IP.
+\newline
+
+
+\end{enumerate}
 
 
 %
