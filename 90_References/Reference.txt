@@ -1,0 +1,60 @@
+
+
+
+
+Density Estimation for Statistics and Data Analysis
+https://www.taylorfrancis.com/books/9781351456173
+
+
+
+Explaining World Wide Web Traffic Self-Similarity
+https://open.bu.edu/bitstream/handle/2144/1574/1995-015-explaining-web-self-similarity.pdf?sequence=1&isAllowed=y
+
+
+
+Research on Detection Algorithm of WEB Crawler
+http://www.sersc.org/journals/IJSIA/vol9_no10_2015/12.pdf
+
+
+
+Design and Implementation of Scalable, Fully Distributed
+Web Crawler for a Web Search Engine
+https://pdfs.semanticscholar.org/736c/d3a9495ebc51bf3236db9ca2e0b9366bed73.pdf
+
+
+
+Design and Implementation of a Distributed
+Crawler and Filtering Processor
+https://link.springer.com/content/pdf/10.1007%2F3-540-45431-4_6.pdf
+
+
+
+URL Assignment Algorithm of Crawler in Distributed System Based on Hash
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4525482
+
+
+
+Design and Implementation of a High-Performance Distributed Web Crawler
+https://pdfs.semanticscholar.org/df0f/42365338fb568783864ddfe5840a7fcc3afd.pdf
+
+
+
+Feature evaluation for web crawler detection with data mining techniques
+https://ac.els-cdn.com/S0957417412002382/1-s2.0-S0957417412002382-main.pdf?_tid=e46837fb-13d4-4efd-9c88-7439a13fd554&acdnat=1523369318_c137010986f6c4a6b078a703d68eca93
+
+
+
+Crawler Detection: A Bayesian Approach
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1690400
+
+
+
+Real-time Web Crawler Detection
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5898963
+
+
+
+An investigation of web crawler behavior: characterization and metrics
+https://ac.els-cdn.com/S0140366405000071/1-s2.0-S0140366405000071-main.pdf?_tid=c3a3d389-c454-4b30-bb2f-892f3830e62c&acdnat=1523369495_e26353c042b352442fbc0a32f12b142d
+
+
