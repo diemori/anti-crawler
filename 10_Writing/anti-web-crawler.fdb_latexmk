@@ -1,16 +1,16 @@
 # Fdb version 3
-["bibtex anti-web-crawler"] 1524216231 "anti-web-crawler.aux" "anti-web-crawler.bbl" "anti-web-crawler" 1524216231
+["bibtex anti-web-crawler"] 1524498232 "anti-web-crawler.aux" "anti-web-crawler.bbl" "anti-web-crawler" 1524498234
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/acmart/ACM-Reference-Format.bst" 1493069147 93993 94d2174e63fb9cd866ec1d0b392ce46c ""
-  "anti-web-crawler.aux" 1524216217 3657 e078e3c2a0521066b01ef9ba38a4bd36 ""
+  "anti-web-crawler.aux" 1524498233 4213 f97752f9d6d4fc537bc48011a76a3976 ""
   "sambib.bib" 0 -1 0 ""
   (generated)
-  "anti-web-crawler.bbl"
   "anti-web-crawler.blg"
-["xdvipdfmx"] 1524216217 "anti-web-crawler.xdv" "anti-web-crawler.pdf" "anti-web-crawler" 1524216231
-  "anti-web-crawler.xdv" 1524216217 160788 a952334892ae23d7775d0efd7f9d69cc "xelatex"
+  "anti-web-crawler.bbl"
+["xdvipdfmx"] 1524498234 "anti-web-crawler.xdv" "anti-web-crawler.pdf" "anti-web-crawler" 1524498234
+  "anti-web-crawler.xdv" 1524498233 165912 5e5c0119b8136ef23f84acf14b0a8fd4 "xelatex"
   (generated)
   "anti-web-crawler.pdf"
-["xelatex"] 1524216216 "anti-web-crawler.tex" "anti-web-crawler.xdv" "anti-web-crawler" 1524216231
+["xelatex"] 1524498232 "anti-web-crawler.tex" "anti-web-crawler.xdv" "anti-web-crawler" 1524498234
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1480098689 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1480098698 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -135,19 +135,20 @@
   "/usr/local/texlive/2017/texmf-var/web2c/xetex/xelatex.fmt" 1523659526 3678519 fa60499320663c611d6fc5b2a474e117 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "acmart.cls" 1523432414 85211 9f6d17e018775847e48cb3cba60de33a ""
-  "anti-web-crawler.aux" 1524216217 3657 e078e3c2a0521066b01ef9ba38a4bd36 ""
+  "anti-web-crawler.aux" 1524498233 4213 f97752f9d6d4fc537bc48011a76a3976 ""
   "anti-web-crawler.bbl" 0 -1 0 "bibtex anti-web-crawler"
-  "anti-web-crawler.out" 1524216217 1912 dd7cd20330b66c9af71705a9f555c2c7 ""
-  "anti-web-crawler.tex" 1523432414 1991 8f4b0d9ea4807e616202327d23c7a558 ""
-  "anti-web-crawler_body.tex" 1524216212 15552 61de8524ba82f3591de53a0318933b57 ""
+  "anti-web-crawler.out" 1524498233 1912 dd7cd20330b66c9af71705a9f555c2c7 ""
+  "anti-web-crawler.tex" 1524485688 1992 88f47822097b568c8123298ebe1fa84b ""
+  "anti-web-crawler_body.tex" 1524498229 16541 018780815a3100c566d7a5a4de1886b4 ""
   "figs/figure_01.png" 1523432414 11906 6812df29939eb043893be73feae1a728 ""
   "figs/figure_02_td1.png" 1523432414 10816 38783c9ba554e20e766eeb8d9855a884 ""
   "figs/figure_03_td2.png" 1523432414 9859 af418a4f49ac30034620e27f45beb57e ""
   "figs/figure_04_td3.png" 1523432414 6352 1d4c7c820bdc58578cb81dbf3c19b864 ""
   "figs/figure_05_td4.png" 1523432414 7170 6ba5eb1689ea9d52c5bc028acf3c948d ""
   "figs/figure_06_nr.png" 1523432414 8880 f20e8788bd171bba5464bfe22d47c0b8 ""
+  "figs/flow_chart_01.png" 1524497826 104032 5f5b9f3b95fe5002a4646626c1cd1fd5 ""
   (generated)
-  "anti-web-crawler.aux"
-  "anti-web-crawler.out"
   "anti-web-crawler.xdv"
+  "anti-web-crawler.aux"
   "anti-web-crawler.log"
+  "anti-web-crawler.out"

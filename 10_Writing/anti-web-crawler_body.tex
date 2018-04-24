@@ -137,24 +137,19 @@ In addition, as shown in Figures 2, 3 and 4, power distribution is also observed
 \end{figure}
 
 \subsection{Simulation}
-In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic .
-\begin{table}[H]
-  \caption{IP and domains generated requests}
-    \begin{tabular}{| l | l | l | l | l | }
-    \hline
-    & start index & mean & max & count \\ \hline
-    Td1 & 100 & 13.278 & 111.116 & 100 \\ 
-    Td2 & 2,000 & 263 & 2,243 & 1,900 \\
-    Td3 & 21.649 & 3/16 & 24 & 19.649 \\ \hline
-    \end{tabular}
-\end{table}
+In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic.
+
+\begin{figure}[H]
+    \includegraphics[width=0.8\columnwidth]{figs/flow_chart_01.png}
+    \caption{Crawler Detection Flow}
+    \label{fig:my_label}
+\end{figure}
 
 \begin{enumerate}
 \item Data Pre-Processing
 \newline In order to prevent duplication of data used in modeling and experimental data in the time series data, Long-tail was constructed by using data from 1 to 24 days in 30 matching data. Traffic verification was performed from the 25th to the last day Data.
 When accessing html files, gif extension files are removed from the long-tail group in order to prevent cumulative access values from increasing in duplicate while accessing gif extension files together.
 Finally, the request log which was not accessed successfully was excluded from the experiment.
-
 
 \item Simulators
 \newline 
@@ -174,6 +169,19 @@ Another function of the simulator is to input the request request to the crawler
 \item Node Reducing Result
 \newline 
 Experiments were performed with threshold set to 30, and the crawler set consisting of up to 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. The following figure is a graph of the process of reducing 222 crawler sets on the simulator.
+
+
+\begin{table}[H]
+  \caption{Simulation Environment}
+    \begin{tabular}{| l | l | l | l | l | }
+    \hline
+    & start index & mean & max & count \\ \hline
+    Td1 & 100 & 13.278 & 111.116 & 100 \\ 
+    Td2 & 2,000 & 263 & 2,243 & 1,900 \\
+    Td3 & 21.649 & 3/16 & 24 & 19.649 \\ \hline
+    \end{tabular}
+\end{table}
+
 
 \begin{table}[H]
   \caption{IP and domains generated requests}
