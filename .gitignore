@@ -1,0 +1,8 @@
+.idea/
+*.csv
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+~$*
+30_Images/
+[LaTeX]anti-web-crawler/
