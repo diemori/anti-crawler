@@ -42,8 +42,8 @@
 \titlenote{Produces the permission block, and
   copyright information}
 
-\author{In Woo Ro}
-\authornote{Dr.~Trovato insisted his name be first.}
+\author{Inwoo Ro}
+\authornote{Inwoo Ro insisted his name be first.}
 \orcid{1234-5678-9012}
 \affiliation{%
   \institution{Hanyang University}
@@ -87,11 +87,11 @@
 
 
 \begin{abstract}
-In this paper, we propose node reducing as a countermeasure against distributed crawlers.\footnote{This is an abstract footnote}
+In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Next, we propose a new method that can detect distributed crawlers. We focused on the property that network traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumption, we can assume that if some nodes are frequently requesting the items that are located in longtail area, those nodes can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released. \footnote{This is an abstract footnote}
 \end{abstract}
 
 
-\keywords{Web Crawler, Traffic Analysis}
+\keywords{Web Crawler, Traffic Analysis, Power Law}
 
 \maketitle
 
