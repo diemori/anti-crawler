@@ -210,7 +210,8 @@ The total number of connected IPs is 81,978 and the number of items is 21,649. T
 \item Traffic Distribution
 \newline 
 The total number of accesses is calculated for each access target, and the sorting is performed in order of the largest number of connections. The results are confirmed to be distributed in a form in which a power law is applied as described in Section 5. 
-In addition, as shown in Figures 2, 3 and 4, power distribution is also observed internally in Td1, Td2, and Long-tail sections. Figurue 2 is a graph of connection frequency of 38 items corresponding to the upper 0.5\% of Td1, Figure 3 shows the top 100 ~ 2000 figures corresponding to Td2, Figure 4 shows the frequency of 100 ~ 2000 . In the next section of the simulator, node reduction will be performed using a set of items belonging to the long-tail as described above.
+In addition, as shown in Figures 2, 3 and 4, power distribution is also observed internally in Td1, Td2, and Long-tail sections. Figure 2 is a graph of connection frequency of 38 items corresponding to the upper 0.5\% of Td1, Figure 3 shows the top 100 ~ 2000 figures corresponding to Td2, Figure 4 shows the frequency of 100 ~ 2000 . In the next section of the simulator, node reduction will be performed using a set of items belonging to the long-tail as described above. \\
+@inwoo.ro: Should add what this power distribution does mean to further experiments or to this paper.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -237,7 +238,7 @@ In addition, as shown in Figures 2, 3 and 4, power distribution is also observed
 \subsection{Simulation}
 In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic.
 
-\begin{figure}[H]
+\begin{figure}
     \includegraphics[width=0.8\columnwidth]{figs/flow_chart_01.png}
     \caption{Crawler Detection Flow}
     \label{fig:my_label}
@@ -266,8 +267,16 @@ Another function of the simulator is to input the request request to the crawler
 \newline
 \item Node Reducing Result
 \newline 
-Experiments were performed with threshold set to 30, and the crawler set consisting of up to 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. The following figure is a graph of the process of reducing 222 crawler sets on the simulator.
+Experiments were performed with threshold set to 30, and the crawler set consisting of up to 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. The following figure is a graph of the process of reducing 222 crawler sets on the simulator. \\
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\columnwidth]{figs/figure_06_nr.png}
+    \caption{Number of IPs reduced by detection}
+    \label{fig:my_label}
+\end{figure}
+
+@inwoo.ro: describe simulation environment
 
 \begin{table}[H]
   \caption{Simulation Environment}
@@ -280,9 +289,10 @@ Experiments were performed with threshold set to 30, and the crawler set consist
     \end{tabular}
 \end{table}
 
+@inwoo.ro: describe how many items were included in NASA web traffic data and how many crawlers we simulated
 
 \begin{table}[H]
-  \caption{IP and domains generated requests}
+  \caption{Number of Items and Crawlers}
   \label{tab:freq}
     \begin{tabular}{| p{2cm} | p{2cm} |}
     \hline
@@ -292,18 +302,11 @@ Experiments were performed with threshold set to 30, and the crawler set consist
     \end{tabular}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\columnwidth]{figs/figure_06_nr.png}
-    \caption{Number of IPs reduced by detection}
-    \label{fig:my_label}
-\end{figure}
-
-This is based on NASA traffic data in 1995, and can be applied to more or less crawler sets depending on the number of items the site has or the length of the long tail.
-False positives occurred in 8 out of 6 matching data and 6 IPs were recognized as crawler nodes except duplicate detection. The number of requests generated per month for each IP is as follows.
+This is based on NASA traffic data in 1995, and can be applied to more or less crawler sets depending on the number of items the site has or the length of the long tail. \\
+A total of eight false positives occurred in 6 days of data. Six IPs were recognized as crawler nodes except for duplicate detection. The number of requests generated per month from each IP is as follows.
 
 
-\begin{table}
+\begin{table}[H]
   \caption{IP and domains generated requests}
   \label{tab:freq}
   \begin{tabular}{ccl}
