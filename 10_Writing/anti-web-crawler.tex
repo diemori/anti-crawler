@@ -101,7 +101,7 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 %
 \section{Introduction}
 Web-crawling is used for collecting data in various fields. Some web-crawlers collect data even though the site is preventing crawlers by robot.txt. This can have a serious impact on the availability of the target service. These web-crawlers modify the header value, distribute IP to masquerade as if they are legitimated users to prevent themselves from detection.
-It is also prohibited to duplicate an entire dataset, even if the service permits viewing of individual data. However, malicious distributed web-crawlers browse and replicate the entire data of the service.
+It is also prohibited to duplicate an entire dataset, even if the service permits viewing of individual data. However, malicious distributed web-crawlers browse and collect the entire data of the service.
 In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti-crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
 
 %
@@ -144,7 +144,7 @@ Second, it could raise false positive error if many users share a public IP.
 In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
 
 \subsection{Number of Distributed Nodes}
-In order for the Distributed crawler to replicate the historical data of a website, the following conditions must be met. 
+In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met. 
 
   \begin{displaymath}
 Cn \geq Um / (Td * 30) 
@@ -175,7 +175,7 @@ Service providers can create a block-list without reducing Td in a batch by usin
     \label{fig:my_label}
 \end{figure}
 
-In order for an attacker to replicate historical data from the service, he must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td2 interval.
+In order for an attacker to collect the entire data from the service, he must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td2 interval.
 The Td value for each interval is calculated by adding the standard deviation (s) of the corresponding interval access frequency to the access frequency value (Amax) of the item having the highest access frequency per IP among the corresponding interval items as follows. 
 
   \begin{displaymath}
