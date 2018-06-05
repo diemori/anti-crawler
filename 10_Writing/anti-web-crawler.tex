@@ -109,8 +109,8 @@ In this paper, we introduce the anti-crawling methods and its countermeasures, a
 % with 2 subsections
 %
 \section{Related Works}
+In this section, we will describe about conventional anti-crawling methods and their counter crawling measures.
 \begin{enumerate}
-
 \item HTTP Header Check
 \newline A basic crawler will send requests without modifying its header information. And web servers can distinguishes a legitimate user from a crawler by checking the request header, especially User-Agent value has been set properly. This header checking method is a basic anti-crawling method.
 But if a crawler attempts to masquerade itself as a legitimate user, it will replay the header information from the web browser or form the http header information similar to a browser. This makes it difficult for a web server to determine whether a client is a crawler or a legitimate user by simply checking the request header.
@@ -141,7 +141,7 @@ Second, it could raise false positive error if many users share a public IP.
 % with 2 subsections
 %
 \section{BLOCKING DISTRIBUTED CRAWLER}
-In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
+As described in previous section, distributed crawler can bypass every conventional anti-crawling methods. In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
 
 \subsection{Number of Distributed Nodes}
 In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met. 
