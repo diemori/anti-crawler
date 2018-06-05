@@ -100,8 +100,8 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 % Introduction
 %
 \section{Introduction}
-Web-crawling is used for collecting data in various fields. Some web-crawlers collect data even though the site is preventing crawlers by robot.txt. This can have a serious impact on the availability of the target service. These web-crawlers modify the header value, distribute IP to masquerade as if they are legitimated users to prevent themselves from detection.
-It is also prohibited to duplicate an entire dataset, even if the service permits viewing of individual data. However, malicious distributed web-crawlers browse and collect the entire data of the service.
+Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the site is prohibiting crawlers by robot.txt. Even though web services try to detect and prevent crawlers, these malicious web-crawlers bypass detection by modifying their header values or distribute IP to masquerade as if they are legitimated users.
+Even if the service permits viewing of each data, it is prohibited to duplicate an entire dataset. However, malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
 In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti-crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
 
 %
