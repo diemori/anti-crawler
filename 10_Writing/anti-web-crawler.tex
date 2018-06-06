@@ -91,7 +91,7 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 \end{abstract}
 
 
-\keywords{Web Crawler, Traffic Analysis, Power Law}
+\keywords{Web Crawler, Traffic Analysis, Power Law, Information Theory}
 
 \maketitle
 
@@ -143,7 +143,7 @@ Second, it could raise false positive error if many users share a public IP.
 \section{BLOCKING DISTRIBUTED CRAWLER}
 As described in previous section, distributed crawler can bypass every conventional anti-crawling methods. In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
 
-\subsection{Number of Distributed Nodes}
+\subsection{Required Number of Crawler Nodes}
 In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met.\\
 \begin{displaymath}
 Cn \geq Um / (Td * 30) 
@@ -158,22 +158,12 @@ The above formula can be described as follows.
 \end{itemize}
 
 \newline
-For an example, if there is a web service updates Um(30,000) items in a month and the service has a restriction rule that if an IP requests more then Td(100) times will be banned, than an attacker who tries to collect every items from the service use at least Cn(10) crawler nodes to avoid restriction.
+For an example, if there is a web service updates Um(30,000) items in a month and the service has a restriction rule that if an IP requests more then Td(100) times will be banned, than an attacker who tries to collect every items from the service use at least Cn(10) crawler nodes to avoid restriction.\\
+Therefore, as Um increases or Td decreases, Cn increases. And Cn numerically indicates the level at which the website is difficult to crawl.
 
-
-\subsection{Node Reducing with statistical approach}
-Instead of increasing the Um from the service provider side, or reducing the Td is a method of identifying a portion of the crawler to Cn and Cn by reducing the block.
-Assuming that the number of IPs used by the attacker is Cm, the attacker must satisfy the following inequality.
-
-  \begin{displaymath}
-Cn - Cm \geq Um / (Td * 30)
-  \end{displaymath}\newline
-On the service provider side, Cm satisfying the inequality below can be obtained.
-
-  \begin{displaymath}
-Cm > Cn - Um / (Td * 30)
-  \end{displaymath}\newline
-Service providers can create a block-list without reducing Td in a batch by using statistical techniques. The frequency of access by users is not the same for each item, and when the items with the highest frequency of access are arranged on the left side, they are distributed in a graph form which exponentially decreases according to a power law as follows.
+\subsection{Generating Long-tail Td zone}
+The number of items that are updated in a month can not be arbitrarily increased. Simple way to prevent distributed crawler is to decrease Td. But this will also increase false positive significantly. In this paper, we solve this problem by reversing the general characteristics of web traffic and the fact that the crawler tries to replicate the entire data.\\
+If you sort the items by access rate, you can see the exponentially decreasing form as shown in the following figure. This means most of the web traffic is concentrated on most frequently requested items. And there is a long-tail region that has low access rate. We calculated max request count of this longtail region and set this value as Td3.
 
 \begin{figure}[H]
     \includegraphics[width=0.7\columnwidth]{figs/figure_01.png}
@@ -181,13 +171,32 @@ Service providers can create a block-list without reducing Td in a batch by usin
     \label{fig:my_label}
 \end{figure}
 
-In order for an attacker to collect the entire data from the service, he must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td2 interval.
-The Td value for each interval is calculated by adding the standard deviation (s) of the corresponding interval access frequency to the access frequency value (Amax) of the item having the highest access frequency per IP among the corresponding interval items as follows. 
+In information theory, unlikely event is more informative then likely event. And the event that a request to an item in long-tail region is much unlikely then the upper items. This means the web service can find more information from a request to the long-tail region.\\
+Hence, when a client keep request the items in long-tail region, the web service increase the count until it reaches Td3, instead of reaching Td mean. This means a web service can set much more sensitive threshold without increasing false positive error rate.\\
+
+
+\subsection{Node Reducing with Long-tail Region}
+In order for an attacker to collect the entire data from the service, he must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. These identified crawler IPs will included in block-list and the number of IPs in blcok-list will be called Cm. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td3 interval.
+
+\begin{itemize}
+\item Cm: Number of crawler node(IP) blocked by service
+\item long\_t: Ratio of items included in long-tail region
+\end{itemize}
+
+So attackers must satisfy the following inequality. Cn - Cm is the number of non-blocked crawler nodes and this should be greater then the right term.
 
   \begin{displaymath}
-    Td = Amax + s * 2
+Cn - Cm \geq (Um * long\_t) / (Td3 * 30)
   \end{displaymath}\newline
-If a particular IP accesses an item in the long-tail region with more than the Td value determined by the above formula, it can be included in the block-list.
+
+On the service provider side, Cm should be greater then right term to block distributed crawlers.
+
+  \begin{displaymath}
+Cm > Cn - (Um * long\_t) / (Td3 * 30)
+  \end{displaymath}\newline
+
+If a particular IP accesses an item in the long-tail region with more than the Td3 value determined by the above formula, it can be included in the block-list.
+
 
 \subsection{Dummy Items}
 The service provider may include a dummy item to detect the crawler in addition to the actual service target item. The item is normally inaccessible to the general user through the UI. For example, it exists as an HTML tag but it is not displayed on the screen due to the attribute setting or the case where the ordinary user is not interested because it exists on the index but is not in the real world.
@@ -204,6 +213,12 @@ Such a dummy item may approach a crawler that performs sequential access but it 
 \section{EXPERIMENT}
 In order to verify the above, experiments were performed to classify the crawler IP for the actual web traffic data. It is based on the web traffic of 1 month released by NASA. Details and experimental method of data are as follows.
 
+\begin{figure} [H]
+    \includegraphics[width=0.88\columnwidth]{figs/flow_chart_01.png}
+    \caption{Crawler Detection Flow}
+    \label{fig:my_label}
+\end{figure}
+
 
 \subsection{Web Traffic Data}
 
@@ -215,8 +230,8 @@ The total number of connected IPs is 81,978 and the number of items is 21,649. T
 \newline
 \item Traffic Distribution
 \newline 
-The total number of accesses is calculated for each access target, and the sorting is performed in order of the largest number of connections. The results are confirmed to be distributed in a form in which a power law is applied as described in Section 5. 
-In addition, as shown in Figures 2, 3 and 4, power distribution is also observed internally in Td1, Td2, and Long-tail sections. Figure 2 is a graph of connection frequency of 38 items corresponding to the upper 0.5\% of Td1, Figure 3 shows the top 100 ~ 2000 figures corresponding to Td2, Figure 4 shows the frequency of 100 ~ 2000 . In the next section of the simulator, node reduction will be performed using a set of items belonging to the long-tail as described above. \\
+The total number of accesses is calculated for each access target, and the sorting is performed in order of the largest number of connections. The results are confirmed to be distributed in a form in which a power law is applied as described in previous section. 
+In addition, as shown in Figures 3, 4 and 5, power distribution is also observed internally in Td1, Td2, and Long-tail sections. Figure 3 is a graph of connection frequency of 38 items corresponding to the upper 0.5\% of Td1, Figure 4 shows the top 100 ~ 2000 figures corresponding to Td2, Figure 5 shows the frequency of 100 ~ 2000 . In the next section of the simulator, node reduction will be performed using a set of items belonging to the long-tail as described above. \\
 @inwoo.ro: Should add what this power distribution does mean to further experiments or to this paper.
 \end{enumerate}
 
@@ -227,16 +242,18 @@ In addition, as shown in Figures 2, 3 and 4, power distribution is also observed
     \label{fig:my_label}
 \end{figure}
 
+Figure 3 shows the most frequently requtestd items. Most of the requests are concentrated in top 0.5\%.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\columnwidth]{figs/figure_03_td2.png}
+    \includegraphics[width=0.85\columnwidth]{figs/figure_03_td2.png}
     \caption{Access Count in Td2}
     \label{fig:my_label}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.80\columnwidth]{figs/figure_04_td3.png}
+    \includegraphics[width=0.85\columnwidth]{figs/figure_04_td3.png}
     \caption{Access Count in Long-tail}
     \label{fig:my_label}
 \end{figure}
@@ -244,11 +261,7 @@ In addition, as shown in Figures 2, 3 and 4, power distribution is also observed
 \subsection{Simulation}
 In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic.
 
-\begin{figure}
-    \includegraphics[width=0.8\columnwidth]{figs/flow_chart_01.png}
-    \caption{Crawler Detection Flow}
-    \label{fig:my_label}
-\end{figure}
+
 
 \begin{enumerate}
 \item Data Pre-Processing
@@ -288,10 +301,10 @@ Experiments were performed with threshold set to 30, and the crawler set consist
   \caption{Simulation Environment}
     \begin{tabular}{| l | l | l | l | l | }
     \hline
-    & start index & mean & max & count \\ \hline
-    Td1 & 100 & 13.278 & 111.116 & 100 \\ 
-    Td2 & 2,000 & 263 & 2,243 & 1,900 \\
-    Td3 & 21.649 & 3/16 & 24 & 19.649 \\ \hline
+    & Ratio & mean & max & count \\ \hline
+    Td1 &  > 0.5\% & 21,250 & 76,040 & 38 \\ 
+    Td2 & 0.5\% - 30\% & 264 & 7,043 & 2,256 \\
+    Td3 & 30\% > & 1.88 & 9 & 5,355 \\ \hline
     \end{tabular}
 \end{table}
 
@@ -300,9 +313,12 @@ Experiments were performed with threshold set to 30, and the crawler set consist
 \begin{table}[H]
   \caption{Number of Items and Crawlers}
   \label{tab:freq}
-    \begin{tabular}{| p{2cm} | p{2cm} |}
+    \begin{tabular}{| p{3.1cm} | p{2cm} |}
     \hline
-    Num of Item & 7.649 \\ \hline
+    Num of Item & 7,649 \\ \hline
+    Mean of Request & 184.76 \\ \hline
+    Num of Long-tail & 5,355 \\ \hline
+    Mean of Td3 & 1.88 \\ \hline
     Max Node & 222 \\ \hline
     False Positive & 0.0312\%  \\ \hline
     \end{tabular}
