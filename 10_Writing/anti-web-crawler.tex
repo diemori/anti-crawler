@@ -87,7 +87,7 @@
 
 
 \begin{abstract}
-In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Next, we propose a new method that can detect distributed crawlers. We focused on the property that network traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumption, we can assume that if some nodes are frequently requesting the items that are located in longtail area, those nodes can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released. \footnote{This is an abstract footnote}
+In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released. \footnote{This is an abstract footnote}
 \end{abstract}
 
 
@@ -100,9 +100,9 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 % Introduction
 %
 \section{Introduction}
-Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the site is prohibiting crawlers by robot.txt. Even though web services try to detect and prevent crawlers, these malicious web-crawlers bypass detection by modifying their header values or distribute IP to masquerade as if they are legitimated users.
-Even if the service permits viewing of each data, it is prohibited to duplicate an entire dataset. However, malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
-In this paper, we introduce the anti-crawling methods and its countermeasures, and show that the conventional anti-crawling method cannot defend the distributed crawler. We also introduce a new anti-crawling technique that gradually adds an IP set using a distributed crawler to the black-list.
+Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
+It is a matter of availability and data property issue because even though any service permits viewing of each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
+In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that gradually adds the distributed crawler node IPs to the block-list.
 
 %
 % Back Ground
@@ -175,7 +175,7 @@ Hence, when a client keep request the items in long-tail region, the web service
 
 
 \subsection{Node Reducing with Long-tail Region}
-In order for an attacker to collect the entire data from the service, he must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. These identified crawler IPs will included in block-list and the number of IPs in blcok-list will be called Cm. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td3 interval.
+In order for an attacker to collect the entire data from the service, he or she must also access the items in the long-tail (Td3) interval. However, the attacker does not know exactly which item the item he is accessing belongs to. Using this information asymmetry, service providers can easily identify IPs that are accessed more frequently than long-tailed segments. These identified crawler IPs will included in block-list and the number of IPs in blcok-list will be called Cm. If we start to increase the Cm value through the long-tail interval, the attacker will crawl with a smaller number of IPs, and Cm will increase in the Td3 interval.
 
 \begin{itemize}
 \item Cm: Number of crawler node(IP) blocked by service
