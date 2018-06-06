@@ -144,15 +144,21 @@ Second, it could raise false positive error if many users share a public IP.
 As described in previous section, distributed crawler can bypass every conventional anti-crawling methods. In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
 
 \subsection{Number of Distributed Nodes}
-In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met. 
-
-  \begin{displaymath}
+In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met.\\
+\begin{displaymath}
 Cn \geq Um / (Td * 30) 
-  \end{displaymath}
+\end{displaymath}
 
+The above formula can be described as follows.
 
-for the number of items (Um) updated in the target site on a month, the maximum number of connections (Td) per day restricted by the site, and the number of IPs (Cn) Must be satisfied.
-For example, if a service that updates 60,000 data per month limits the maximum number of connections per day to 50, an attacker must perform crawling using at least 40 distributed IPs. Conversely, on the service provider side, the larger the Um, the smaller the Td is, the more advantageous it is. However, Um is difficult to secure arbitrarily, and if Td is reduced, the ratio of false positives to normal users increases.
+\begin{itemize}
+\item Um: Number of items updated in month
+\item Td: Maximum number of request per IP
+\item Cn: Number of crawler node(IP)
+\end{itemize}
+
+\newline
+For an example, if there is a web service updates Um(30,000) items in a month and the service has a restriction rule that if an IP requests more then Td(100) times will be banned, than an attacker who tries to collect every items from the service use at least Cn(10) crawler nodes to avoid restriction.
 
 
 \subsection{Node Reducing with statistical approach}
@@ -311,7 +317,7 @@ A total of eight false positives occurred in 6 days of data. Six IPs were recogn
   \label{tab:freq}
   \begin{tabular}{ccl}
     \toprule
-    IP or domain&Port\\
+    IP or domain&Number of requests\\
     \midrule
     156.80.168.122 & 117\\
     163.205.180.17 & 564\\
