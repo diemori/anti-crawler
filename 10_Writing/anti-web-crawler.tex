@@ -1,18 +1,20 @@
-\documentclass[sigconf,anonymous=false]{acmart}
+\documentclass[sigconf,anonymous=true]{acmart}
 
 \usepackage{booktabs} % For formal tables
 
 % Copyright
-%\setcopyright{none}
+\setcopyright{none}
 %\setcopyright{acmcopyright}
 %\setcopyright{acmlicensed}
-\setcopyright{rightsretained}
+
+%\setcopyright{rightsretained}
+
 %\setcopyright{usgov}
 %\setcopyright{usgovmixed}
 %\setcopyright{cagov}
 %\setcopyright{cagovmixed}
 
-\settopmatter{printacmref=true}
+\settopmatter{printacmref=false}
 
 
 
@@ -39,8 +41,7 @@
 
 \begin{document}
 \title{Anti-Methods for Distributed Web-Crawler}
-\titlenote{Produces the permission block, and
-  copyright information}
+%\titlenote{Produces the permission block, and copyright information}
 
 \author{Inwoo Ro}
 \authornote{Inwoo Ro insisted his name be first.}
@@ -87,7 +88,7 @@
 
 
 \begin{abstract}
-In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released. \footnote{This is an abstract footnote}
+In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released.
 \end{abstract}
 
 
