@@ -103,7 +103,7 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 \section{Introduction}
 Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
 It is a matter of availability and data property issue because even though any service permits viewing of each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
-In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that gradually adds the distributed crawler node IPs to the block-list.
+In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
 
 %
 % Back Ground
@@ -211,28 +211,54 @@ Such a dummy item may approach a crawler that performs sequential access but it 
 % 3. Node Reducing Result
 %
 \section{EXPERIMENT}
-In order to verify the above, experiments were performed to classify the crawler IP for the actual web traffic data. It is based on the web traffic of 1 month released by NASA. Details and experimental method of data are as follows.
+The experiment was designed to verify classification performance between crawlers and actual web traffics. The key goals were maximum number of crawler nodes that the detection algorithm can identify and false positive, compare to normal access frequency based anti-crawling.\\
+We used the web traffic log that NASA released. Details and experimental method of data are as follows.
 
-\begin{figure} [H]
-    \includegraphics[width=0.88\columnwidth]{figs/flow_chart_01.png}
-    \caption{Crawler Detection Flow}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_design.png}
+    \caption{Experiment Design}
     \label{fig:my_label}
 \end{figure}
 
 
 \subsection{Web Traffic Data}
-
-
 \begin{enumerate}
 \item Source
 \newline NASA released a total of 1,891,715 access logs for the month of July 1995. In this paper, the log is parsed into csv format and composed of 4 columns including IP, date, access target and access result.
 The total number of connected IPs is 81,978 and the number of items is 21,649. The most accessed items received 111,116 requests as '/images/NASA-logosmall.gif'.
 \newline
-\item Traffic Distribution
-\newline 
-The total number of accesses is calculated for each access target, and the sorting is performed in order of the largest number of connections. The results are confirmed to be distributed in a form in which a power law is applied as described in previous section. 
-In addition, as shown in Figures 3, 4 and 5, power distribution is also observed internally in Td1, Td2, and Long-tail sections. Figure 3 is a graph of connection frequency of 38 items corresponding to the upper 0.5\% of Td1, Figure 4 shows the top 100 ~ 2000 figures corresponding to Td2, Figure 5 shows the frequency of 100 ~ 2000 . In the next section of the simulator, node reduction will be performed using a set of items belonging to the long-tail as described above. \\
-@inwoo.ro: Should add what this power distribution does mean to further experiments or to this paper.
+
+\item Data Pre-Processing and Traffic Distribution
+\newline In order to prevent duplication of data used in modeling and experimental data in the time series data, Long-tail was constructed by using data from 1 to 24 days in 30 matching data. Traffic verification was performed from the 25th to the last day Data.
+When accessing html files, gif extension files are removed from the long-tail group in order to prevent cumulative access values from increasing in duplicate while accessing gif extension files together. And we excluded the request log which was not accessed successfully from the experiment. Finally we made the test set as below table.
+
+\begin{table}[H]
+  \caption{Pre-Processed Web Traffic Data}
+  \label{tab:freq}
+    \begin{tabular}{| p{3.1cm} | p{2cm} |}
+    \hline
+    Num of Item & 7,649 \\ \hline
+    Num of Long-tail & 5,355 \\ \hline
+    Mean of Request & 184.76 \\ \hline
+    Mean of Long-tail & 1.88 \\ \hline
+    \end{tabular}
+\end{table}
+
+As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. And 5,355 items were included in the long-tail region. The mean of the total request count was 184.76, and the mean of long-tail region was 1.88. It means we can set about 6880\% more sensitive threshold to the crawler detection algorithm.\\ 
+
+\begin{table}[H]
+  \caption{Experiment Data}
+    \begin{tabular}{| l | l | l | l | l | }
+    \hline
+    & Ratio & mean & max & count \\ \hline
+    Td1 &  > 0.5\% & 21,250 & 76,040 & 38 \\ 
+    Td2 & 0.5\% - 30\% & 264 & 7,043 & 2,256 \\
+    Td3 & 30\% > & 1.88 & 9 & 5,355 \\ \hline
+    \end{tabular}
+\end{table}
+
+And also we could find NASA traffic data also has power distribution as shown in Figures 2, 3 and 4.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -241,8 +267,7 @@ In addition, as shown in Figures 3, 4 and 5, power distribution is also observed
     \caption{Access Count in Td1}
     \label{fig:my_label}
 \end{figure}
-
-Figure 3 shows the most frequently requtestd items. Most of the requests are concentrated in top 0.5\%.
+Figure 2 shows the group of the most frequently requtestd items. 
 
 \begin{figure}[H]
     \centering
@@ -258,17 +283,19 @@ Figure 3 shows the most frequently requtestd items. Most of the requests are con
     \label{fig:my_label}
 \end{figure}
 
+Figure 4 shows the long-tail region of sorted result. We can find Td3 threshold value from this group.
+
 \subsection{Simulation}
 In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic.
 
+\begin{figure} [H]
+    \includegraphics[width=0.88\columnwidth]{figs/flow_chart_01.png}
+    \caption{Crawler Detection Flow}
+    \label{fig:my_label}
+\end{figure}
 
 
 \begin{enumerate}
-\item Data Pre-Processing
-\newline In order to prevent duplication of data used in modeling and experimental data in the time series data, Long-tail was constructed by using data from 1 to 24 days in 30 matching data. Traffic verification was performed from the 25th to the last day Data.
-When accessing html files, gif extension files are removed from the long-tail group in order to prevent cumulative access values from increasing in duplicate while accessing gif extension files together.
-Finally, the request log which was not accessed successfully was excluded from the experiment.
-
 \item Simulators
 \newline 
 The simulator is implemented using python. The parameters are the size of the distributed IP set used by the crawler, the long-tail list, the entire item list, and threshold values used for detection.
@@ -295,29 +322,12 @@ Experiments were performed with threshold set to 30, and the crawler set consist
     \label{fig:my_label}
 \end{figure}
 
-@inwoo.ro: describe simulation environment
-
 \begin{table}[H]
-  \caption{Simulation Environment}
-    \begin{tabular}{| l | l | l | l | l | }
-    \hline
-    & Ratio & mean & max & count \\ \hline
-    Td1 &  > 0.5\% & 21,250 & 76,040 & 38 \\ 
-    Td2 & 0.5\% - 30\% & 264 & 7,043 & 2,256 \\
-    Td3 & 30\% > & 1.88 & 9 & 5,355 \\ \hline
-    \end{tabular}
-\end{table}
-
-@inwoo.ro: describe how many items were included in NASA web traffic data and how many crawlers we simulated
-
-\begin{table}[H]
-  \caption{Number of Items and Crawlers}
+  \caption{Experiment Results}
   \label{tab:freq}
     \begin{tabular}{| p{3.1cm} | p{2cm} |}
     \hline
     Num of Item & 7,649 \\ \hline
-    Mean of Request & 184.76 \\ \hline
-    Num of Long-tail & 5,355 \\ \hline
     Mean of Td3 & 1.88 \\ \hline
     Max Node & 222 \\ \hline
     False Positive & 0.0312\%  \\ \hline
