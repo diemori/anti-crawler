@@ -40,7 +40,7 @@
 
 
 \begin{document}
-\title{Anti-Methods for Distributed Web-Crawler}
+\title{Anti-Methods for Distributed Web-Crawler:\\ Long-tail Threshold Model}
 %\titlenote{Produces the permission block, and copyright information}
 
 \author{Inwoo Ro}
@@ -199,8 +199,8 @@ If a particular IP accesses an item in the long-tail region with more than the T
 
 
 \subsection{Dummy Items}
-The service provider may include a dummy item to detect the crawler in addition to the actual service target item. The item is normally inaccessible to the general user through the UI. For example, it exists as an HTML tag but it is not displayed on the screen due to the attribute setting or the case where the ordinary user is not interested because it exists on the index but is not in the real world.
-Such a dummy item may approach a crawler that performs sequential access but it can maintain a relatively low threshold value because the accessibility of the general user is low and it generates a lower interval than the long-tail interval derived from the traffic can do.
+The service provider may include a dummy item to detect the crawler in addition to the actual service target item. Dummy items are inaccessible for the legitmiate user because there are no user interfaces for dummy items or hidden. There are few ways to generate dummy items, it may exists as an HTML tag but it is not displayed on the screen by the attribute setting or it may contains a garbage information that normal users shell not be interested. But a crawler that performs sequential access to the service will may access the dummy items. By this characteristic, dummy items can work as extension of the long-tail region.\\
+In this paper, we will not include dummy items in experiments due to fair comparsion with real traffic logs which will never access dummy items.\\
 
 
 
@@ -211,8 +211,8 @@ Such a dummy item may approach a crawler that performs sequential access but it 
 % 3. Node Reducing Result
 %
 \section{EXPERIMENT}
-The experiment was designed to verify classification performance between crawlers and actual web traffics. The key goals were maximum number of crawler nodes that the detection algorithm can identify and false positive, compare to normal access frequency based anti-crawling.\\
-We used the web traffic log that NASA released. Details and experimental method of data are as follows.
+Our experiment was designed to verify the classification performance of crawler detection module between crawlers and legitimate  web traffics. We compared LTM(Long-tail Threshold Model) with normal access frequency based anti-crawling on maximum number of crawler nodes and false positive.\\
+We used the real web traffic log that NASA released in 1995. And then we performed pre-processing, modeling and simulation.
 
 \begin{figure}[H]
     \centering
@@ -225,13 +225,13 @@ We used the web traffic log that NASA released. Details and experimental method 
 \subsection{Web Traffic Data}
 \begin{enumerate}
 \item Source
-\newline NASA released a total of 1,891,715 access logs for the month of July 1995. In this paper, the log is parsed into csv format and composed of 4 columns including IP, date, access target and access result.
-The total number of connected IPs is 81,978 and the number of items is 21,649. The most accessed items received 111,116 requests as '/images/NASA-logosmall.gif'.
+\newline NASA released a total of 1,891,715 access logs for the month of July 1995. We parsed this log into csv format and composed of 4 columns including IP, date, access target and access result.
+The total number of connected IPs are 81,978 and the number of items are 21,649.
 \newline
 
 \item Data Pre-Processing and Traffic Distribution
-\newline In order to prevent duplication of data used in modeling and experimental data in the time series data, Long-tail was constructed by using data from 1 to 24 days in 30 matching data. Traffic verification was performed from the 25th to the last day Data.
-When accessing html files, gif extension files are removed from the long-tail group in order to prevent cumulative access values from increasing in duplicate while accessing gif extension files together. And we excluded the request log which was not accessed successfully from the experiment. Finally we made the test set as below table.
+\newline In order to prevent duplication of data used for in modeling and experimental data in the time series data, we split the log by time. July 1 to 24 was used for LTM modeling and 25 to 30 was used for testing.
+When a user accesses a html file, they also get accesses to gif files that are linked. This can force a multi increase of access count. Hence we removed some gif files from the long-tail. For the last we excluded the request logs that the access results are not success from the experiment. After doing the pre-processing we have got the test set as below table.
 
 \begin{table}[H]
   \caption{Pre-Processed Web Traffic Data}
@@ -245,7 +245,7 @@ When accessing html files, gif extension files are removed from the long-tail gr
     \end{tabular}
 \end{table}
 
-As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. And 5,355 items were included in the long-tail region. The mean of the total request count was 184.76, and the mean of long-tail region was 1.88. It means we can set about 6880\% more sensitive threshold to the crawler detection algorithm.\\ 
+As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. Which has 5,355 items as a long-tail region. The mean of the total request count was 184.76, and the mean of long-tail region was 1.88. It means simply we can set about 6880\% more sensitive threshold to the crawler detection algorithm.\\ 
 
 \begin{table}[H]
   \caption{Experiment Data}
@@ -258,7 +258,7 @@ As a result, we made a pre-processed traffic data set consists of 7,649 items fr
     \end{tabular}
 \end{table}
 
-And also we could find NASA traffic data also has power distribution as shown in Figures 2, 3 and 4.
+The key part was the real web traffic will show the power distribution after sorting with access frequency or not. And we could verify the NASA traffic data also has power distribution as shown in Figures 2, 3 and 4.
 \end{enumerate}
 
 \begin{figure}[H]
@@ -283,10 +283,10 @@ Figure 2 shows the group of the most frequently requtestd items.
     \label{fig:my_label}
 \end{figure}
 
-Figure 4 shows the long-tail region of sorted result. We can find Td3 threshold value from this group.
+Figure 4 shows the long-tail region of sorted result. We set Td3 threshold value as 20 which is about 2 times larger than the maximum access rate of long-tail region. Setting a Td3 value in LTM has a heuristic part because web services has different purposes and circumstances.
 
 \subsection{Simulation}
-In this paper, we implemented two kinds of simulation. One is to check whether it is possible to detect and disable the crawler IP group by performing node reduction through items belonging to the long-tail, and the other is to check false positive when the actual traffic is input to the same detection logic.
+In this paper, we implemented simulation for two purpose. One is to check whether it is possible to detect and disable the crawler IP group with LTM, and the other one is to check false positive when input the actual web traffic to LTM.
 
 \begin{figure} [H]
     \includegraphics[width=0.88\columnwidth]{figs/flow_chart_01.png}
@@ -296,24 +296,11 @@ In this paper, we implemented two kinds of simulation. One is to check whether i
 
 
 \begin{enumerate}
-\item Simulators
+\item Distributed Crawler Detecting Simulation
 \newline 
-The simulator is implemented using python. The parameters are the size of the distributed IP set used by the crawler, the long-tail list, the entire item list, and threshold values used for detection.
-The implementation method allows the Crawler IP Set to access each item by traversing the entire item list, and accesses the IP in the crawler distributed IP set at each access.
-When the crawler accesses a long-tail entry, it adds the IP to the warning dictionary and increments the access count by one. However, if the same IP accesses the same item, it does not increase the access count because it is not related to the purpose of crawling. When the access count exceeds the threshold value, Node Reducing is implemented by adding the corresponding IP to the banned list. Figure 5 below shows an example of running a crawler using 100 distributed IPs for 7,649 items. The number of long-tail items is 5,355 and the threshold is set to 20. 
-
-\begin{figure}[H]
-    \includegraphics[width=0.65\columnwidth]{figs/figure_05_td4.png}
-    \caption{Number of IPs using crawling}
-    \label{fig:my_label}
-\end{figure}
-
-The IPs included in the crawler IP set gradually accumulate the access count, and the node reduction starts from the point when the access count of the entire crawler node group increases beyond {number of nodes} * {threshold}.
-Another function of the simulator is to input the request request to the crawler simulator based on the actual web traffic log. This is implemented to confirm the case where the simulator judges the actual web traffic as a crawler.
-\newline
-\item Node Reducing Result
-\newline 
-Experiments were performed with threshold set to 30, and the crawler set consisting of up to 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. The following figure is a graph of the process of reducing 222 crawler sets on the simulator. \\
+We used python for implementing the LTM simulator. The required parameters are the 1) size of the distributed IP set used by the crawler, 2) the long-tail list, 3) the entire item list, and 4) threshold values used for detection.\\
+The LTM simulator watched the Crawler IP Set to access each item by traversing the entire item list, and increased the access count for the IP at each access to the long-tail entry.
+When the crawler accesses a long-tail entry, LTM increases the access count of IP. Exceptionally, if a same IP accesses the same item again, LTM does not increase the access count considering that it is not related to the purpose of crawling. When an access count of IP exceeds the threshold value, LTM adds the corresponding IP to the block list. Figure 5 below shows an example of running a crawler using 100 distributed IPs for 7,649 items. The number of long-tail items is 5,355 and the threshold is set to 20. The following figure is a graph of the process of reducing 222 crawler sets on the simulator. \\
 
 \begin{figure}[H]
     \centering
@@ -321,6 +308,15 @@ Experiments were performed with threshold set to 30, and the crawler set consist
     \caption{Number of IPs reduced by detection}
     \label{fig:my_label}
 \end{figure}
+
+
+We can verify that the crawler IP set is gradually reduced until get totally blocked. When the first crawler node IP access count exceeds the Td3 and blocked, node reducing count increases exponentially. This is because when a crawler node blocked, other crawler nodes get more burden and has to access more items.
+\newline
+
+\item Node Reducing Result
+\newline 
+Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631.
+
 
 \begin{table}[H]
   \caption{Experiment Results}
@@ -334,8 +330,8 @@ Experiments were performed with threshold set to 30, and the crawler set consist
     \end{tabular}
 \end{table}
 
-This is based on NASA traffic data in 1995, and can be applied to more or less crawler sets depending on the number of items the site has or the length of the long tail. \\
-A total of eight false positives occurred in 6 days of data. Six IPs were recognized as crawler nodes except for duplicate detection. The number of requests generated per month from each IP is as follows.
+We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
+In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. S
 
 
 \begin{table}[H]
@@ -366,9 +362,9 @@ A total of eight false positives occurred in 6 days of data. Six IPs were recogn
 % CONCLUSION
 %
 \section{CONCLUSION}
-In this paper, we introduce a node reducing method that identifies the IP set of distributed crawlers and gradually reduces IP by using the property that web traffic follows the power law.
-The node reducing scheme has shown a very low level of false positives against distributed crawlers using multiple IPs, effectively identifying crawler sets.
-
+In this paper, we introduced LTM(Long-tail Threshold Model) a node reducing method that identifies the IP set of distributed crawlers and gradually reduces IP by using the long-tail region.\\
+By simulating with the real web traffic data, LTM effectively identified distributed crawler and showed a very low level of false positive error.
+Web crawling against the term of web service or impairs quality is a serious security threat. And considering that there are some crawler developer using distributed crawler proxy service for illegal purposes, LTM could improve web service data security.
 
 
 %
