@@ -5,6 +5,7 @@ class AntiCrawl:
     def __init__(self, path='access_log_jul95.csv'):
         self.df = None
         self.load(path)
+        self.df_tdall = None
 
     def load(self, path):
         self.df = pd.read_csv(path, sep='|', encoding='utf-8')
@@ -79,6 +80,7 @@ class AntiCrawl:
 
         td3_train = self._merge_train(df_items, df_train_items)
 
+        self.df_tdall = td3_train
         df_td3 = self.plot_dfcount(td3_train, label=_label)
 
         all_cnt = df_items.shape[0]

@@ -315,23 +315,20 @@ We can verify that the crawler IP set is gradually reduced until get totally blo
 
 \item Node Reducing Result
 \newline 
-Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631.
-
+Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. In below table, we compared the result of LTM with normal frequency based anti-crawling method.
 
 \begin{table}[H]
-  \caption{Experiment Results}
-  \label{tab:freq}
-    \begin{tabular}{| p{3.1cm} | p{2cm} |}
+  \caption{Experiment Data}
+    \begin{tabular}{| l | l | l | l | l | }
     \hline
-    Num of Item & 7,649 \\ \hline
-    Mean of Td3 & 1.88 \\ \hline
-    Max Node & 222 \\ \hline
-    False Positive & 0.0312\%  \\ \hline
+    & Items & Mean & Threshold & Max Elimination \\ \hline
+    LTM & 5,355 & 1.88 & 20 & 222 \\ 
+    Freq. & 7,649 & 184.76 \% & 185 & 30 \\ \hline
     \end{tabular}
 \end{table}
 
 We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
-In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. S
+In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. 
 
 
 \begin{table}[H]
