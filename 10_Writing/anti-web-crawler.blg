@@ -1,0 +1,65 @@
+This is BibTeX, Version 0.99d (Web2C 2010)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: anti-web-crawler.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6800 items from 3400.
+Database file #1: exbib.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=5001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--empty publisher in balla2011real
+Warning--empty address in balla2011real
+Warning--empty publisher in shkapenyuk2002design
+Warning--empty address in shkapenyuk2002design
+Warning--empty address in silverman2018density
+Warning--empty publisher in stassopoulou2006crawler
+Warning--empty address in stassopoulou2006crawler
+Warning--empty publisher in wan2008url
+Warning--empty address in wan2008url
+Warning--empty publisher in zeinalipour2002design
+Warning--empty address in zeinalipour2002design
+You've used 12 entries,
+            5732 wiz_defined-function locations,
+            1368 strings with 16633 characters,
+and the built_in function-call counts, 14402 in all, are:
+= -- 1877
+> -- 429
+< -- 0
++ -- 144
+- -- 164
+* -- 915
+:= -- 1414
+add.period$ -- 62
+call.type$ -- 12
+change.case$ -- 74
+chr.to.int$ -- 12
+cite$ -- 23
+duplicate$ -- 1313
+empty$ -- 914
+format.name$ -- 204
+if$ -- 3519
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 47
+newline$ -- 131
+num.names$ -- 96
+pop$ -- 480
+preamble$ -- 1
+purify$ -- 181
+quote$ -- 0
+skip$ -- 484
+stack$ -- 0
+substring$ -- 1115
+swap$ -- 147
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 275
+warning$ -- 11
+while$ -- 112
+width$ -- 0
+write$ -- 243
+(There were 11 warnings)
