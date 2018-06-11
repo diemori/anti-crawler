@@ -8,3 +8,4 @@ __pycache__/
 [LaTeX]anti-web-crawler/
 *.fdb_latexmk
 *.xdv
+*_memo*

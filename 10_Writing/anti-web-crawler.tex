@@ -88,7 +88,7 @@
 
 
 \begin{abstract}
-In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released.
+In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a long-tail area that legitimate users do not generally request but crawlers will. Because crawler algorithms are generally intend collect every target items. So crawlers request iteratively and recursively request items by parsing web service architecture. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs could be classified as crawler nodes. We tested this theory by simulating with real world web traffic data that NASA released and found the effective and low false positive results.
 \end{abstract}
 
 
@@ -153,7 +153,7 @@ Cn \geq Um / (Td * 30)
 The above formula can be described as follows.
 
 \begin{itemize}
-\item Um: Number of items updated in month
+\item Um: Number of items u›ated in month
 \item Td: Maximum number of request per IP
 \item Cn: Number of crawler node(IP)
 \end{itemize}
