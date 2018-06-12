@@ -101,7 +101,7 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 % Introduction
 %
 \section{Introduction}
-Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
+Web-crawling is used in various fields for collecting data.[8] Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
 It is a matter of availability and data property issue because even though any service permits viewing of each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
 In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
 
@@ -119,18 +119,11 @@ But if a crawler attempts to masquerade itself as a legitimate user, it will rep
 
 \item Access Pattern based Anti-Crawling
 \newline
-Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding could be regarded as a crawler. 
-An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user.
-In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie.
-Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs.[Inwoo Ro] 
+Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding could be regarded as a crawler. An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user. In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie. Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs. [8]
 \newline 
 \item Access Frequency based Anti-Crawling
 \newline 
-Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold limit of access count in an unit time. If a client with a specific IP requests exceeds this limit in pre-defined time, the web server determines that this IP as a crowler node.
-
-This method has two well known problems. 
-First, it has vulnerability against distributed crawler. If an attackers use distributed crawler such as Crawlera, access rate for a crawler node IP will be reduced enough to bypass threshold limit.
-Second, it could raise false positive error if many users share a public IP.
+Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold limit of access count in an unit time. If a client with a specific IP requests exceeds this limit in pre-defined time, the web server determines that this IP as a crowler node. This method has two well known problems. First, it has vulnerability against distributed crawler.[8] If an attackers use distributed crawler service such as Crawlera, access rate for a crawler node IP will be reduced enough to bypass threshold limit. Second, it could raise false positive error if many users share a public IP.
 \newline
 
 
@@ -315,20 +308,40 @@ We can verify that the crawler IP set is gradually reduced until get totally blo
 
 \item Node Reducing Result
 \newline 
-Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. In below table, we compared the result of LTM with normal frequency based anti-crawling method.
+Experiments were performed with threshold set to 20, and the crawler set consisting of 222 nodes was completely detectable and false positives were 1.33 cases per day, which was 0.0312\% of the daily IP number. In below table, we compared the result of LTM with normal FBA(Frequency Based Anti-crawling) method.
 
 \begin{table}[H]
   \caption{Experiment Data}
     \begin{tabular}{| l | l | l | l | l | }
     \hline
-    & Items & Mean & Threshold & Max Elimination \\ \hline
-    LTM & 5,355 & 1.88 & 20 & 222 \\ 
-    Freq. & 7,649 & 184.76 & 185 & 30 \\ \hline
+    & Threshold & Max Node & False Positive \\ \hline
+    LTM & 10 & 420 & 0.13\% \\ 
+    LTM & 20 & 222 & 0.03\% \\ 
+    FBA & 10 & 561 & 10.68\% \\
+    FBA & 20 & 302 & 3.64\% \\ 
+    FBA & 80 & 75 & 0.12\% \\ 
+    FBA & 110 & 56 & 0.03\% \\ \hline
     \end{tabular}
 \end{table}
 
 We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
 In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_compare.png}
+    \caption{False Positive}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_limit_compare.png}
+    \caption{Number of Detected Crawlers}
+    \label{fig:my_label}
+\end{figure}
+
+In figure 8, x-axis is threshold and y-axis is false positive rate(\%). It shows 
 
 
 \begin{table}[H]

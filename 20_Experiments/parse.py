@@ -32,8 +32,6 @@ def parse_log(file_path):
             if cnt % 1000 == 0:
                 print(cnt)
 
-            # print(items)
-
             wline = "%(ip)s|%(date)s|%(type)s|%(uri)s|%(result)s|%(size)s\n" % items
             fo.write(wline)
 
@@ -44,10 +42,30 @@ def parse_log(file_path):
                 print("Error Line type2: %d" % cnt)
                 continue
 
-
         fo.close()
 
     return True
 
-file = "access_log_jul95"
-parse_log(file)
+
+def parse_fp(file_name):
+    with open(file_name, 'r', encoding='utf-8') as fi:
+        org_line = fi.readline()
+        parts = org_line.split('|')
+
+        tholds = parts[::4]
+        banneds = parts[1::4]
+        totals = parts[2::4]
+        ratios = parts[3::4]
+
+        for row in zip(tholds, banneds, totals, ratios):
+            wline = "|".join(row)
+            print(row)
+
+    return True
+
+
+if __name__ == '__main__':
+    # file = "access_log_jul95"
+    # parse_log(file)
+    csv_name = 'ltm_fp_test_1_60.csv'
+    parse_fp(csv_name)
