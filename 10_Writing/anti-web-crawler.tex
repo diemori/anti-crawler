@@ -17,7 +17,6 @@
 \settopmatter{printacmref=false}
 
 
-
 % DOI
 \acmDOI{}
 
@@ -40,11 +39,10 @@
 
 
 \begin{document}
-\title{Anti-Methods for Distributed Web-Crawler:\\ Long-tail Threshold Model}
+\title{Detection Methods for Distributed Web-Crawlers: Long-tail Threshold Model}
 %\titlenote{Produces the permission block, and copyright information}
 
 \author{Inwoo Ro}
-\authornote{Inwoo Ro insisted his name be first.}
 \orcid{1234-5678-9012}
 \affiliation{%
   \institution{Hanyang University}
@@ -63,7 +61,6 @@
 \email{inwoo13@hanyang.ac.kr}
 
 \author{Joong Soo Han}
-\authornote{The secretary disavows any knowledge of this author's actions.}	
 \affiliation{%
   \institution{Hanyang University}
   \city{Seoul}
@@ -73,8 +70,7 @@
 \email{soohan@hanyang.ac.kr}
 
 \author{Eul Gyu Im}
-\authornote{This author is the
-  one who did all the really hard work.}
+\orcid{0000-0002-4130-513X}
 \affiliation{%
   \institution{Hanyang University}
   \city{Seoul}
@@ -88,7 +84,7 @@
 
 
 \begin{abstract}
-In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a long-tail area that legitimate users do not generally request but crawlers will. Because crawler algorithms are generally intend collect every target items. So crawlers request iteratively and recursively request items by parsing web service architecture. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs could be classified as crawler nodes. We tested this theory by simulating with real world web traffic data that NASA released and found the effective and low false positive results.
+In this paper, we propose a countermeasure against distributed crawlers. We first introduce known crawler detection methods in general and how distributed crawlers bypass these detection methods. Then, we propose a new method that can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. This means when we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items.[1] And there will be a longtail area that legitimate users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web service architecture to collect every items they aimed for. By following these two assumptions, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. We tested this theory by simulating with real world web traffic data that NASA released.
 \end{abstract}
 
 
@@ -101,7 +97,7 @@ In this paper, we propose a countermeasure against distributed crawlers. We firs
 % Introduction
 %
 \section{Introduction}
-Web-crawling is used in various fields for collecting data.[8] Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
+Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
 It is a matter of availability and data property issue because even though any service permits viewing of each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
 In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
 
@@ -111,23 +107,25 @@ In this paper, we introduce the conventional anti-crawling methods and its count
 %
 \section{Related Works}
 In this section, we will describe about conventional anti-crawling methods and their counter crawling measures.
-\begin{enumerate}
-\item HTTP Header Check
-\newline A basic crawler will send requests without modifying its header information. And web servers can distinguishes a legitimate user from a crawler by checking the request header, especially User-Agent value has been set properly. This header checking method is a basic anti-crawling method.
+
+\begin{itemize}
+\item HTTP Header Check\newline
+A basic crawler will send requests without modifying its header information. And web servers can distinguishes a legitimate user from a crawler by checking the request header, especially User-Agent value has been set properly. This header checking method is a basic anti-crawling method.
 But if a crawler attempts to masquerade itself as a legitimate user, it will replay the header information from the web browser or form the http header information similar to a browser. This makes it difficult for a web server to determine whether a client is a crawler or a legitimate user by simply checking the request header.
-\newline
 
-\item Access Pattern based Anti-Crawling
-\newline
-Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding could be regarded as a crawler. An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user. In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie. Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs. [8]
-\newline 
-\item Access Frequency based Anti-Crawling
-\newline 
-Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold limit of access count in an unit time. If a client with a specific IP requests exceeds this limit in pre-defined time, the web server determines that this IP as a crowler node. This method has two well known problems. First, it has vulnerability against distributed crawler.[8] If an attackers use distributed crawler service such as Crawlera, access rate for a crawler node IP will be reduced enough to bypass threshold limit. Second, it could raise false positive error if many users share a public IP.
-\newline
+\item Access Pattern based Anti-Crawling\newline
+Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the corresponding could be regarded as a crawler. 
+An attacker performing an aggressive crawling predefines the core data that the web service wants to collect, and implements a crawler that requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user.
+In the case of a web service using advanced approach to access pattern recognition, the service is viewed as a set of consecutive requests from the viewpoint of the user UX, and requests and responses belonging to the same set are chained by including a specific hash value in the cookie.
+Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs.[Inwoo Ro] 
 
+\item Access Frequency based Anti-Crawling\newline
+Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold limit of access count in an unit time. If a client with a specific IP requests exceeds this limit in pre-defined time, the web server determines that this IP as a crowler node.
 
-\end{enumerate}
+This method has two well known problems. 
+First, it has vulnerability against distributed crawler. If an attackers use distributed crawler such as Crawlera, access rate for a crawler node IP will be reduced enough to bypass threshold limit.
+Second, it could raise false positive error if many users share a public IP.
+\end{itemize}
 
 
 %
@@ -138,7 +136,8 @@ Access frequency based anti-crawling is a method that determines a client is whe
 As described in previous section, distributed crawler can bypass every conventional anti-crawling methods. In this section, we propose a new technique to detect and block distributed crawlers that could not be defended by existing anti-crawling techniques.
 
 \subsection{Required Number of Crawler Nodes}
-In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met.\\
+In order for the Distributed crawler to collect the entire data of a website, the following conditions must be met.
+
 \begin{displaymath}
 Cn \geq Um / (Td * 30) 
 \end{displaymath}
@@ -146,26 +145,26 @@ Cn \geq Um / (Td * 30)
 The above formula can be described as follows.
 
 \begin{itemize}
-\item Um: Number of items u›ated in month
+\item Um: Number of items updated in month
 \item Td: Maximum number of request per IP
 \item Cn: Number of crawler node(IP)
 \end{itemize}
 
-For an example, if there is a web service updates Um(30,000) items in a month and the service has a restriction rule that if an IP requests more then Td(100) times will be banned, than an attacker who tries to collect every items from the service use at least Cn(10) crawler nodes to avoid restriction.\\
+For an example, if there is a web service updates Um(30,000) items in a month and the service has a restriction rule that if an IP requests more then Td(100) times will be banned, than an attacker who tries to collect every items from the service use at least Cn(10) crawler nodes to avoid restriction.
 Therefore, as Um increases or Td decreases, Cn increases. And Cn numerically indicates the level at which the website is difficult to crawl.
 
 \subsection{Generating Long-tail Td zone}
-The number of items that are updated in a month can not be arbitrarily increased. Simple way to prevent distributed crawler is to decrease Td. But this will also increase false positive significantly. In this paper, we solve this problem by reversing the general characteristics of web traffic and the fact that the crawler tries to replicate the entire data.\\
+The number of items that are updated in a month can not be arbitrarily increased. Simple way to prevent distributed crawler is to decrease Td. But this will also increase false positive significantly. In this paper, we solve this problem by reversing the general characteristics of web traffic and the fact that the crawler tries to replicate the entire data.
 If you sort the items by access rate, you can see the exponentially decreasing form as shown in the following figure. This means most of the web traffic is concentrated on most frequently requested items. And there is a long-tail region that has low access rate. We calculated max request count of this longtail region and set this value as Td3.
 
 \begin{figure}[H]
     \includegraphics[width=0.7\columnwidth]{figs/figure_01.png}
     \caption{Access Frequency per number of connections}
-    \label{fig:my_label}
+    \label{fig:fig1}
 \end{figure}
 
-In information theory, unlikely event is more informative then likely event. And the event that a request to an item in long-tail region is much unlikely then the upper items. This means the web service can find more information from a request to the long-tail region.\\
-Hence, when a client keep request the items in long-tail region, the web service increase the count until it reaches Td3, instead of reaching Td mean. This means a web service can set much more sensitive threshold without increasing false positive error rate.\\
+In information theory, unlikely event is more informative then likely event. And the event that a request to an item in long-tail region is much unlikely then the upper items. This means the web service can find more information from a request to the long-tail region.
+Hence, when a client keep request the items in long-tail region, the web service increase the count until it reaches Td3, instead of reaching Td mean. This means a web service can set much more sensitive threshold without increasing false positive error rate.
 
 
 \subsection{Node Reducing with Long-tail Region}
@@ -180,20 +179,21 @@ So attackers must satisfy the following inequality. Cn - Cm is the number of non
 
   \begin{displaymath}
 Cn - Cm \geq (Um * long\_t) / (Td3 * 30)
-  \end{displaymath}\newline
+  \end{displaymath}
 
 On the service provider side, Cm should be greater then right term to block distributed crawlers.
 
   \begin{displaymath}
 Cm > Cn - (Um * long\_t) / (Td3 * 30)
-  \end{displaymath}\newline
+  \end{displaymath}
 
 If a particular IP accesses an item in the long-tail region with more than the Td3 value determined by the above formula, it can be included in the block-list.
 
 
 \subsection{Dummy Items}
-The service provider may include a dummy item to detect the crawler in addition to the actual service target item. Dummy items are inaccessible for the legitmiate user because there are no user interfaces for dummy items or hidden. There are few ways to generate dummy items, it may exists as an HTML tag but it is not displayed on the screen by the attribute setting or it may contains a garbage information that normal users shell not be interested. But a crawler that performs sequential access to the service will may access the dummy items. By this characteristic, dummy items can work as extension of the long-tail region.\\
-In this paper, we will not include dummy items in experiments due to fair comparsion with real traffic logs which will never access dummy items.\\
+The service provider may include a dummy item to detect the crawler in addition to the actual service target item. Dummy items are inaccessible for the legitmiate user because there are no user interfaces for dummy items or hidden. There are few ways to generate dummy items, it may exists as an HTML tag but it is not displayed on the screen by the attribute setting or it may contains a garbage information that normal users shell not be interested. But a crawler that performs sequential access to the service will may access the dummy items. By this characteristic, dummy items can work as extension of the long-tail region.
+
+In this paper, we will not include dummy items in experiments due to fair comparsion with real traffic logs which will never access dummy items.
 
 
 
@@ -204,26 +204,23 @@ In this paper, we will not include dummy items in experiments due to fair compar
 % 3. Node Reducing Result
 %
 \section{EXPERIMENT}
-Our experiment was designed to verify the classification performance of crawler detection module between crawlers and legitimate  web traffics. We compared LTM(Long-tail Threshold Model) with normal access frequency based anti-crawling on maximum number of crawler nodes and false positive.\\
+Our experiment was designed to verify the classification performance of crawler detection module between crawlers and legitimate  web traffics. We compared LTM(Long-tail Threshold Model) with normal access frequency based anti-crawling on maximum number of crawler nodes and false positive.
 We used the real web traffic log that NASA released in 1995. And then we performed pre-processing, modeling and simulation.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\columnwidth]{figs/figure_design.png}
     \caption{Experiment Design}
-    \label{fig:my_label}
+    \label{fig:fig2}
 \end{figure}
 
 
 \subsection{Web Traffic Data}
-\begin{enumerate}
-\item Source
-\newline NASA released a total of 1,891,715 access logs for the month of July 1995. We parsed this log into csv format and composed of 4 columns including IP, date, access target and access result.
-The total number of connected IPs are 81,978 and the number of items are 21,649.
-\newline
+\begin{itemize}
+\item Source\newline NASA released a total of 1,891,715 access logs for the month of July 1995. We parsed this log into csv format and composed of 4 columns including IP, date, access target and access result.
+The total number of connected IPs are 81,978 and the number of items are 21,649.\newline
 
-\item Data Pre-Processing and Traffic Distribution
-\newline In order to prevent duplication of data used for in modeling and experimental data in the time series data, we split the log by time. July 1 to 24 was used for LTM modeling and 25 to 30 was used for testing.
+\item Data Pre-Processing and Traffic Distribution\newline In order to prevent duplication of data used for in modeling and experimental data in the time series data, we split the log by time. July 1 to 24 was used for LTM modeling and 25 to 30 was used for testing.
 When a user accesses a html file, they also get accesses to gif files that are linked. This can force a multi increase of access count. Hence we removed some gif files from the long-tail. For the last we excluded the request logs that the access results are not success from the experiment. After doing the pre-processing we have got the test set as below table.
 
 \begin{table}[H]
@@ -231,14 +228,14 @@ When a user accesses a html file, they also get accesses to gif files that are l
   \label{tab:freq}
     \begin{tabular}{| p{3.1cm} | p{2cm} |}
     \hline
-    Number of Total Items & 7,649 \\ \hline
-    Number of Long-tail & 5,355 \\ \hline
-    Mean of Total Items & 184.76 \\ \hline
+    Num of Item & 7,649 \\ \hline
+    Num of Long-tail & 5,355 \\ \hline
+    Mean of Request & 184.76 \\ \hline
     Mean of Long-tail & 1.88 \\ \hline
     \end{tabular}
 \end{table}
 
-As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. Which has 5,355 items as a long-tail region. The mean of the total request count was 184.76 while the mean of long-tail region was 1.88. It means simply we can set about 6880\% more sensitive threshold to the crawler detection algorithm.\\ 
+As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. Which has 5,355 items as a long-tail region. The mean of the total request count was 184.76, and the mean of long-tail region was 1.88. It means simply we can set about 6880\% more sensitive threshold to the crawler detection algorithm.
 
 \begin{table}[H]
   \caption{Experiment Data}
@@ -252,13 +249,13 @@ As a result, we made a pre-processed traffic data set consists of 7,649 items fr
 \end{table}
 
 The key part was the real web traffic will show the power distribution after sorting with access frequency or not. And we could verify the NASA traffic data also has power distribution as shown in Figures 2, 3 and 4.
-\end{enumerate}
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\columnwidth]{figs/figure_02_td1.png}
     \caption{Access Count in Td1}
-    \label{fig:my_label}
+    \label{fig:fig3}
 \end{figure}
 Figure 2 shows the group of the most frequently requtestd items. 
 
@@ -266,14 +263,14 @@ Figure 2 shows the group of the most frequently requtestd items.
     \centering
     \includegraphics[width=0.85\columnwidth]{figs/figure_03_td2.png}
     \caption{Access Count in Td2}
-    \label{fig:my_label}
+    \label{fig:fig4}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\columnwidth]{figs/figure_04_td3.png}
     \caption{Access Count in Long-tail}
-    \label{fig:my_label}
+    \label{fig:fig5}
 \end{figure}
 
 Figure 4 shows the long-tail region of sorted result. We set Td3 threshold value as 20 which is about 2 times larger than the maximum access rate of long-tail region. Setting a Td3 value in LTM has a heuristic part because web services has different purposes and circumstances.
@@ -284,95 +281,65 @@ In this paper, we implemented simulation for two purpose. One is to check whethe
 \begin{figure} [H]
     \includegraphics[width=0.88\columnwidth]{figs/flow_chart_01.png}
     \caption{Crawler Detection Flow}
-    \label{fig:my_label}
+    \label{fig:fig6}
 \end{figure}
 
 
-\begin{enumerate}
-\item Distributed Crawler Detecting Simulation
-\newline 
-We used python for implementing the LTM simulator. The required parameters are the 1) size of the distributed IP set used by the crawler, 2) the long-tail list, 3) the entire item list, and 4) threshold values used for detection.\\
+\begin{itemize}
+\item Distributed Crawler Detecting Simulation\newline We used python for implementing the LTM simulator. The required parameters are the 1) size of the distributed IP set used by the crawler, 2) the long-tail list, 3) the entire item list, and 4) threshold values used for detection.
 The LTM simulator watched the Crawler IP Set to access each item by traversing the entire item list, and increased the access count for the IP at each access to the long-tail entry.
-When the crawler accesses a long-tail entry, LTM increases the access count of IP. Exceptionally, if a same IP accesses the same item again, LTM does not increase the access count considering that it is not related to the purpose of crawling. When an access count of IP exceeds the threshold value, LTM adds the corresponding IP to the block list. Figure 5 below shows an example of running a crawler using 100 distributed IPs for 7,649 items. The number of long-tail items is 5,355 and the threshold is set to 20. The following figure is a graph of the process of reducing 222 crawler sets on the simulator. \\
+When the crawler accesses a long-tail entry, LTM increases the access count of IP. Exceptionally, if a same IP accesses the same item again, LTM does not increase the access count considering that it is not related to the purpose of crawling. When an access count of IP exceeds the threshold value, LTM adds the corresponding IP to the block list. Figure 5 below shows an example of running a crawler using 100 distributed IPs for 7,649 items. The number of long-tail items is 5,355 and the threshold is set to 20. The following figure is a graph of the process of reducing 222 crawler sets on the simulator. 
+
+We can verify that the crawler IP set is gradually reduced until get totally blocked. When the first crawler node IP access count exceeds the Td3 and blocked, node reducing count increases exponentially. This is because when a crawler node blocked, other crawler nodes get more burden and has to access more items.\newline
+
+\item Node Reducing Result\newline Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. In below table, we compared the result of LTM with normal frequency based anti-crawling method.
+
+We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.
+In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. 
+
+156.80.168.122 and sputnix.cas.und.nodak.edu, which generated relatively few requests, were detected as crawler nodes because the requests of these IPs were concentrated on a certain date, 29.7\% of them were in the long-tail area Of the respondents.
+\end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\columnwidth]{figs/figure_06_nr.png}
     \caption{Number of IPs reduced by detection}
-    \label{fig:my_label}
+    \label{fig:fig7}
 \end{figure}
-
-
-We can verify that the crawler IP set is gradually reduced until get totally blocked. When the first crawler node IP access count exceeds the Td3 and blocked, node reducing count increases exponentially. This is because when a crawler node blocked, other crawler nodes get more burden and has to access more items.
-\newline
-
-\item Node Reducing Result
-\newline 
-Experiments were performed with threshold set to 20, and the crawler set consisting of 222 nodes was completely detectable and false positives were 1.33 cases per day, which was 0.0312\% of the daily IP number. In below table, we compared the result of LTM with normal FBA(Frequency Based Anti-crawling) method.
 
 \begin{table}[H]
   \caption{Experiment Data}
     \begin{tabular}{| l | l | l | l | l | }
     \hline
-    & Threshold & Max Node & False Positive \\ \hline
-    LTM & 10 & 426 & 0.1239\% \\ 
-    LTM & 20 & 222 & 0.0275\% \\ 
-    LTM & 35 & 128 & 0.0046\% \\ 
-    FBA & 10 & 573 & 8.8064\% \\
-    FBA & 20 & 299 & 2.8819\% \\ 
-    FBA & 35 & 173 & 0.8903\% \\ 
-    FBA & 100 & 60 & 0.0367\% \\ \hline
+    & Items & Mean & Threshold & Max Elimination \\ \hline
+    LTM & 5,355 & 1.88 & 20 & 222 \\ 
+    Freq. & 7,649 & 184.76 & 185 & 30 \\ \hline
     \end{tabular}
 \end{table}
 
-We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
-In the experiment, we compared the detection capability between the LTM and the FBA when the same threshold was set, and compared false positives under the same conditions.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/figure_limit_compare.png}
-    \caption{Number of Detectable Crawler Nodes}
-    \label{fig:my_label}
-\end{figure}
-
-Since LTM uses long-tail region instead of entire items, FBA detects more crawler nodes with equivalent threshold as figure 8. But as shown in the following figure, it is meaningless to simply compare the detection results without considering false positives.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_compare_01.png}
-    \caption{False Positive: 1 to 50}
-    \label{fig:my_label}
-\end{figure}
-
-As we can verify from figure 8 and 9, as threshold in x-axis increases false positive and number of detectable crawler nodes are both decrease. In the case of LTM, we can verify that the false positive value is less than 0.15 \% from the low threshold region of less than 10.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_compare_02.png}
-    \caption{False Positive: 50 to 100}
-    \label{fig:my_label}
-\end{figure}
-
- However, in case of FBA, the threshold should be set to 76 or more to have similar false positive error performance by trading off the detection performance.\\
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_ratio.png}
-    \caption{Number of Detectable Crawler Nodes}
-    \label{fig:my_label}
-\end{figure}
-
-In this experiment, LTM reached the minimum false positive error rate of 0.0046\% when FBA reached only 0.0367\% which is 798\% larger than the best score of LTM. This means within the similar level of false positive, LTM performs 400\~500\% better detection score than classic FBA method. And even though FBA trade off the detection score, FBA generates 798\% times more false positive error. When we set the threshold to 35 which is the value that LTM reached the minimum false positive, FBA generated 19400\% times more false positive than LTM.
-
-\end{enumerate}
-
+\begin{table}[H]
+  \caption{IP and domains generated requests}
+  \label{tab:req}
+  \begin{tabular}{ccl}
+    \toprule
+    IP or domain&Number of requests\\
+    \midrule
+    156.80.168.122 & 117\\
+    163.205.180.17 & 564\\
+    dwkm206.usa1.com & 167\\
+    jalisco.engr.ucdavis.edu & 424\\
+    jbiagioni.npt.nuwc.navy.mil & 2124\\
+    sputnix.cas.und.nodak.edu & 101\\
+  \bottomrule
+\end{tabular}
+\end{table}
 
 
 %
 % CONCLUSION
 %
 \section{CONCLUSION}
-In this paper, we introduced LTM(Long-tail Threshold Model) a node reducing method that identifies the IP set of distributed crawlers and gradually reduces IP by using the long-tail region.\\
+In this paper, we introduced LTM(Long-tail Threshold Model) a node reducing method that identifies the IP set of distributed crawlers and gradually reduces IP by using the long-tail region.
 By simulating with the real web traffic data, LTM effectively identified distributed crawler and showed a very low level of false positive error.
 Web crawling against the term of web service or impairs quality is a serious security threat. And considering that there are some crawler developer using distributed crawler proxy service for illegal purposes, LTM could improve web service data security.
 
@@ -386,16 +353,10 @@ In order to apply the results of this paper more securely to actual services, it
 
 
 
-
 % Bibliography
 \nocite{*}
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{exbib}
-
-
-
-
-%\input{anti-web-crawler_body}
 
 
 \end{document}
