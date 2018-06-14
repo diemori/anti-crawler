@@ -228,9 +228,9 @@ When a user accesses a html file, they also get accesses to gif files that are l
   \label{tab:freq}
     \begin{tabular}{| p{3.1cm} | p{2cm} |}
     \hline
-    Num of Item & 7,649 \\ \hline
-    Num of Long-tail & 5,355 \\ \hline
-    Mean of Request & 184.76 \\ \hline
+    Number of Total Items & 7,649 \\ \hline
+    Number of Long-tail & 5,355 \\ \hline
+    Mean of Total Items & 184.76 \\ \hline
     Mean of Long-tail & 1.88 \\ \hline
     \end{tabular}
 \end{table}
@@ -307,32 +307,63 @@ In our experiment, 8 false positives cases occurred in 6 days of data. We remove
     \label{fig:fig7}
 \end{figure}
 
+
+We can verify that the crawler IP set is gradually reduced until get totally blocked. When the first crawler node IP access count exceeds the Td3 and blocked, node reducing count increases exponentially. This is because when a crawler node blocked, other crawler nodes get more burden and has to access more items.
+\newline
+
 \begin{table}[H]
   \caption{Experiment Data}
     \begin{tabular}{| l | l | l | l | l | }
     \hline
-    & Items & Mean & Threshold & Max Elimination \\ \hline
-    LTM & 5,355 & 1.88 & 20 & 222 \\ 
-    Freq. & 7,649 & 184.76 & 185 & 30 \\ \hline
+    & Threshold & Max Node & False Positive \\ \hline
+    LTM & 10 & 426 & 0.1239\% \\ 
+    LTM & 20 & 222 & 0.0275\% \\ 
+    LTM & 35 & 128 & 0.0046\% \\ 
+    FBA & 10 & 573 & 8.8064\% \\
+    FBA & 20 & 299 & 2.8819\% \\ 
+    FBA & 35 & 173 & 0.8903\% \\ 
+    FBA & 100 & 60 & 0.0367\% \\ \hline
     \end{tabular}
 \end{table}
 
-\begin{table}[H]
-  \caption{IP and domains generated requests}
-  \label{tab:req}
-  \begin{tabular}{ccl}
-    \toprule
-    IP or domain&Number of requests\\
-    \midrule
-    156.80.168.122 & 117\\
-    163.205.180.17 & 564\\
-    dwkm206.usa1.com & 167\\
-    jalisco.engr.ucdavis.edu & 424\\
-    jbiagioni.npt.nuwc.navy.mil & 2124\\
-    sputnix.cas.und.nodak.edu & 101\\
-  \bottomrule
-\end{tabular}
-\end{table}
+We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
+In the experiment, we compared the detection capability between the LTM and the FBA when the same threshold was set, and compared false positives under the same conditions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_limit_compare.png}
+    \caption{Number of Detectable Crawler Nodes}
+    \label{fig:my_label}
+\end{figure}
+
+Since LTM uses long-tail region instead of entire items, FBA detects more crawler nodes with equivalent threshold as figure 8. But as shown in the following figure, it is meaningless to simply compare the detection results without considering false positives.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_compare_01.png}
+    \caption{False Positive: 1 to 50}
+    \label{fig:my_label}
+\end{figure}
+
+As we can verify from figure 8 and 9, as threshold in x-axis increases false positive and number of detectable crawler nodes are both decrease. In the case of LTM, we can verify that the false positive value is less than 0.15 \% from the low threshold region of less than 10.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_compare_02.png}
+    \caption{False Positive: 50 to 100}
+    \label{fig:my_label}
+\end{figure}
+
+ However, in case of FBA, the threshold should be set to 76 or more to have similar false positive error performance by trading off the detection performance.\\
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\columnwidth]{figs/figure_fp_ratio.png}
+    \caption{Number of Detectable Crawler Nodes}
+    \label{fig:my_label}
+\end{figure}
+
+In this experiment, LTM reached the minimum false positive error rate of 0.0046\% when FBA reached only 0.0367\% which is 798\% larger than the best score of LTM. This means within the similar level of false positive, LTM performs 400\~500\% better detection score than classic FBA method. And even though FBA trade off the detection score, FBA generates 798\% times more false positive error. When we set the threshold to 35 which is the value that LTM reached the minimum false positive, FBA generated 19400\% times more false positive than LTM.
 
 
 %
