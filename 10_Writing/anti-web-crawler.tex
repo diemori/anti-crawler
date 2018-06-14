@@ -295,9 +295,6 @@ We can verify that the crawler IP set is gradually reduced until get totally blo
 \item Node Reducing Result\newline Experiments were performed with threshold set to 30, and the crawler set consisting of 222 nodes was completely detectable. If the number of nodes exceeded 300, it was not detected at all. False positives were 1.33 cases per day, which was 0.0312\% of the daily average IP number of 3,631. In below table, we compared the result of LTM with normal frequency based anti-crawling method.
 
 We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.
-In our experiment, 8 false positives cases occurred in 6 days of data. We removed duplicated IPs from this result and found that 6 IPs were miss recognized as crawler nodes. The number of requests per month from each of these 6 IPs are as follows. 
-
-156.80.168.122 and sputnix.cas.und.nodak.edu, which generated relatively few requests, were detected as crawler nodes because the requests of these IPs were concentrated on a certain date, 29.7\% of them were in the long-tail area Of the respondents.
 \end{itemize}
 
 \begin{figure}[H]
@@ -307,9 +304,6 @@ In our experiment, 8 false positives cases occurred in 6 days of data. We remove
     \label{fig:fig7}
 \end{figure}
 
-
-We can verify that the crawler IP set is gradually reduced until get totally blocked. When the first crawler node IP access count exceeds the Td3 and blocked, node reducing count increases exponentially. This is because when a crawler node blocked, other crawler nodes get more burden and has to access more items.
-\newline
 
 \begin{table}[H]
   \caption{Experiment Data}
@@ -325,9 +319,6 @@ We can verify that the crawler IP set is gradually reduced until get totally blo
     FBA & 100 & 60 & 0.0367\% \\ \hline
     \end{tabular}
 \end{table}
-
-We can detect more or less number of crawler nodes depending on the number of items the site has or the length of the long tail. Since this simulation is based on old NASA traffic data(1995), total number of items were quite small compared to modern web services. If a service has 10 times more items than our test data and has equal distribution that service could detect more than 2000 crawler nodes.\\
-In the experiment, we compared the detection capability between the LTM and the FBA when the same threshold was set, and compared false positives under the same conditions.
 
 \begin{figure}[H]
     \centering
