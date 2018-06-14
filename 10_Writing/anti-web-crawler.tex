@@ -97,9 +97,9 @@ In this paper, we propose an advanced countermeasure against distributed web-cra
 % Introduction
 %
 \section{Introduction}
-Web-crawling is used in various fields for collecting data. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. And even though web services try to detect and prevent crawlers by anti-crawler methods, these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are legitimated users.
-It is a matter of availability and data property issue because even though any service permits viewing of each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can have a serious impact on the availability of the target service.
-In this paper, we introduce the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot defend against the distributed crawler. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
+Web-crawling is used in various fields for collecting data[1]. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. Some web services try to detect and prevent crawlers by anti-crawler methods but these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are normal users.
+It is a matter of availability and data property issue because even though any service allows users to access each data, it is prohibited to duplicate an entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can cause a serious impact on the availability of the target service.
+In this paper, we investigate the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot stop distributed crawlers. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
 
 %
 % Back Ground
