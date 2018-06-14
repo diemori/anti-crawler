@@ -1,4 +1,4 @@
-This is BibTeX, Version 0.99d (TeX Live 2018)
+This is BibTeX, Version 0.99d (TeX Live 2017)
 Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: anti-web-crawler.aux
 The style file: ACM-Reference-Format.bst
@@ -17,6 +17,9 @@ Warning--empty address in r11
 Warning--no journal in r14
 Warning--no number and no volume in r14
 Warning--page numbers missing in both pages and numpages fields in r14
+Warning--no journal in r15
+Warning--no number and no volume in r15
+Warning--page numbers missing in both pages and numpages fields in r15
 Warning--INFO: reduced pages = [1] to numpages = []
 Warning--empty publisher in r8
 Warning--empty address in r8
@@ -27,45 +30,45 @@ Warning--empty publisher in r7
 Warning--empty address in r7
 Warning--empty publisher in r6
 Warning--empty address in r6
-You've used 14 entries,
+You've used 15 entries,
             5732 wiz_defined-function locations,
-            1377 strings with 16598 characters,
-and the built_in function-call counts, 16057 in all, are:
-= -- 2033
-> -- 473
+            1382 strings with 16733 characters,
+and the built_in function-call counts, 16864 in all, are:
+= -- 2109
+> -- 493
 < -- 0
-+ -- 154
-- -- 185
-* -- 1004
-:= -- 1623
-add.period$ -- 72
-call.type$ -- 14
-change.case$ -- 84
-chr.to.int$ -- 22
-cite$ -- 28
-duplicate$ -- 1478
-empty$ -- 1030
-format.name$ -- 220
-if$ -- 3870
++ -- 159
+- -- 193
+* -- 1056
+:= -- 1712
+add.period$ -- 79
+call.type$ -- 15
+change.case$ -- 89
+chr.to.int$ -- 23
+cite$ -- 32
+duplicate$ -- 1564
+empty$ -- 1093
+format.name$ -- 228
+if$ -- 4047
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 51
-newline$ -- 147
-num.names$ -- 112
-pop$ -- 544
+missing$ -- 55
+newline$ -- 158
+num.names$ -- 120
+pop$ -- 578
 preamble$ -- 1
-purify$ -- 209
+purify$ -- 223
 quote$ -- 0
-skip$ -- 541
+skip$ -- 564
 stack$ -- 0
-substring$ -- 1233
-swap$ -- 160
+substring$ -- 1293
+swap$ -- 164
 text.length$ -- 19
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 321
-warning$ -- 15
-while$ -- 136
+type$ -- 337
+warning$ -- 18
+while$ -- 144
 width$ -- 0
-write$ -- 275
-(There were 16 warnings)
+write$ -- 295
+(There were 19 warnings)

@@ -110,13 +110,13 @@ In this section, we will summarize conventional anti-crawling methods and their 
 
 \begin{itemize}
 \item HTTP Header Check\newline
-A basic crawler will send requests without modification on its header information. Web servers can distinguishes a legitimate user from a crawler by checking the request header, especially if the User-Agent value has been set properly. This header checking method is a basic anti-crawling method[10].
+A basic crawler will send requests without modification on its header information. Web servers can distinguishes a legitimate user from a crawler by checking the request header, especially if the User-Agent value has been set properly. This header checking method is a basic anti-crawling method[11].
 However if a crawler attempts to masquerade itself as a legitimate user, it will replay the header information from the web browser or form the http header information similar to a browser. This makes it difficult for a web server to determine whether a client is a crawler or a legitimate user by simply checking the request header.
 
 \item Access Pattern based Anti-Crawling\newline
 Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the client will be regarded as a crawler. 
 A crawler performing an aggressive crawling predefines the core data that the crawler wants to collect, and requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user.
-In the case of a web service using access pattern recognition, the service analyzes the pattern when a normal user accesses through the UI. If some requests have a significant difference from this pattern, the service classifies it as a crawler[10].
+In the case of a web service using access pattern recognition, the service analyzes the pattern when a normal user accesses through the UI. If some requests have a significant difference from this pattern, the service classifies it as a crawler[11].
 Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs[4].
 
 \item Access Frequency based Anti-Crawling\newline
@@ -155,7 +155,7 @@ Therefore, as Um increases or Td decreases, Cn increases. And Cn numerically ind
 
 \subsection{Generating Long-tail Td zone}
 The number of items that are updated in a month can not be arbitrarily increased. Therefore, simple way to prevent distributed crawler is to decrease Td. But this will also increase false positive significantly. In this paper, we solve this problem by reversing the general characteristics of web traffic and the fact that the crawler tries to replicate the entire data.
-If you sort the items by access rate, you can see the exponentially decreasing form as shown in the following figure. This means most of the web traffic is concentrated on most frequently requested items. And there is a long-tail region that has low access rate. We calculated max request count of this longtail region and set this value as Td3.
+If you sort the items by access rate, you can see the exponentially decreasing form as shown in the following figure. The most of the web traffic is concentrated on most frequently requested items[10]. And there is a long-tail region that has low access rate. We calculated max request count of this longtail region and set this value as Td3.
 
 \begin{figure}[H]
     \includegraphics[width=0.7\columnwidth]{figs/figure_01.png}
@@ -205,7 +205,7 @@ In this paper, we will not include dummy items in experiments due to fair compar
 %
 \section{EXPERIMENT}
 Our experiment was designed to verify the classification performance of crawler detection module between crawlers and legitimate  web traffics. We compared LTM(Long-tail Threshold Model) with normal access frequency based anti-crawling on maximum number of crawler nodes and false positive.
-We used the real web traffic log that NASA released in 1995. And then we performed pre-processing, modeling and simulation.
+We used the real web traffic log that NASA released in 1995[6]. And then we performed pre-processing, modeling and simulation.
 
 \begin{figure}[H]
     \centering
@@ -220,8 +220,8 @@ We used the real web traffic log that NASA released in 1995. And then we perform
 \item Source\newline NASA released a total of 1,891,715 access logs for the month of July 1995. We parsed this log into csv format and composed of 4 columns including IP, date, access target and access result.
 The total number of connected IPs are 81,978 and the number of items are 21,649.\newline
 
-\item Data Pre-Processing and Traffic Distribution\newline In order to prevent duplication of data used for in modeling and experimental data in the time series data, we split the log by time. July 1 to 24 was used for LTM modeling and 25 to 30 was used for testing.
-When a user accesses a html file, they also get accesses to gif files that are linked. This can force a multi increase of access count. Hence we removed some gif files from the long-tail. In addition, we excluded the request logs that the access results are not success from the experiment. After doing the pre-processing we have got the test set as below table.
+\item Data Pre-Processing and Traffic Distribution\newline We did three steps of pre-processing job for experiments. First, we split the log into train and test datasets by time. July 1 to 24 was used for LTM modeling and 25 to 30 was used for testing.
+Second, we merged some requests as a single request to prevent duplicated counting. For an example, when a user accesses a html file, they also get accesses to image files that are linked. This can force a multiple increase of access count. Therefore we removed some requests for image files. In addition, we excluded the request logs that the access results are not success from the experiment. After doing the pre-processing steps we have got the test set as below table.
 
 \begin{table}[H]
   \caption{Pre-Processed Web Traffic Data}
@@ -235,7 +235,7 @@ When a user accesses a html file, they also get accesses to gif files that are l
     \end{tabular}
 \end{table}
 
-As a result, we made a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. Which has 5,355 items as a long-tail region. The mean of the total request count was 184.76, and the mean of long-tail region was 1.88. It means simply we can set about 6880\% more sensitive threshold to the crawler detection algorithm.
+As a described in table 1, we built a pre-processed traffic data set consists of 7,649 items from 21,649 raw data. Which has a long-tail region consist of 5,355 items. The mean of total request count was 184.76, and the mean of long-tail region was 1.88. The difference between mean values simply shows we can set more sensitive threshold to the crawler detection algorithm.
 
 \begin{table}[H]
   \caption{Experiment Data}
