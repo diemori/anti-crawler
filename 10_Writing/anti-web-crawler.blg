@@ -14,6 +14,9 @@ Reallocated glb_str_end (elt_size=4) to 20 items from 10.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Warning--empty publisher in r11
 Warning--empty address in r11
+Warning--no journal in r14
+Warning--no number and no volume in r14
+Warning--page numbers missing in both pages and numpages fields in r14
 Warning--INFO: reduced pages = [1] to numpages = []
 Warning--empty publisher in r8
 Warning--empty address in r8
@@ -24,45 +27,45 @@ Warning--empty publisher in r7
 Warning--empty address in r7
 Warning--empty publisher in r6
 Warning--empty address in r6
-You've used 13 entries,
+You've used 14 entries,
             5732 wiz_defined-function locations,
-            1372 strings with 16513 characters,
-and the built_in function-call counts, 15284 in all, are:
-= -- 1963
-> -- 453
+            1377 strings with 16598 characters,
+and the built_in function-call counts, 16057 in all, are:
+= -- 2033
+> -- 473
 < -- 0
-+ -- 149
-- -- 177
-* -- 956
-:= -- 1536
-add.period$ -- 67
-call.type$ -- 13
-change.case$ -- 79
-chr.to.int$ -- 21
-cite$ -- 24
-duplicate$ -- 1395
-empty$ -- 969
-format.name$ -- 212
-if$ -- 3699
++ -- 154
+- -- 185
+* -- 1004
+:= -- 1623
+add.period$ -- 72
+call.type$ -- 14
+change.case$ -- 84
+chr.to.int$ -- 22
+cite$ -- 28
+duplicate$ -- 1478
+empty$ -- 1030
+format.name$ -- 220
+if$ -- 3870
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 47
-newline$ -- 139
-num.names$ -- 104
-pop$ -- 508
+missing$ -- 51
+newline$ -- 147
+num.names$ -- 112
+pop$ -- 544
 preamble$ -- 1
-purify$ -- 195
+purify$ -- 209
 quote$ -- 0
-skip$ -- 518
+skip$ -- 541
 stack$ -- 0
-substring$ -- 1177
-swap$ -- 156
+substring$ -- 1233
+swap$ -- 160
 text.length$ -- 19
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 305
-warning$ -- 12
-while$ -- 128
+type$ -- 321
+warning$ -- 15
+while$ -- 136
 width$ -- 0
-write$ -- 259
-(There were 13 warnings)
+write$ -- 275
+(There were 16 warnings)
