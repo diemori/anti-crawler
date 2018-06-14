@@ -84,7 +84,7 @@
 
 
 \begin{abstract}
-In this paper, we propose an advanced countermeasure against distributed web-crawlers. We investigate the state of the art methods for crawler detection and analyze how distributed crawlers can bypass these methods.  Our method can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. When we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items. In addition there will be an area that normal users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web-pages to collect every items they aimed for. By following these two properties, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. The experimental reuslts with NASA web-traffic data showed our method was effective for identifying distributed crawlers with low false positives.
+In this paper, we propose an advanced countermeasure against distributed web-crawlers. We investigate the state of the art methods for crawler detection and analyze how distributed crawlers can bypass these methods.  Our method can detect distributed crawlers by focusing on the property that web traffics follow the power distribution. When we sort the items by the number of requests, most of the requests are concentrated on the most frequently requested items. In addition there will be an area that normal users are not generally request. But crawlers will request for it because of their algorithms are intend to request iteratively by parsing web-pages to collect every items they aimed for. By following these two properties, we can assume that if some IPs are frequently requesting the items that are located in longtail area, those IPs can be classified as crawler node. The experimental results with NASA web-traffic data showed our method was effective for identifying distributed crawlers with low false positives.
 \end{abstract}
 
 
@@ -99,7 +99,7 @@ In this paper, we propose an advanced countermeasure against distributed web-cra
 \section{Introduction}
 Web-crawling is used in various fields for collecting data[1]. Some web-crawlers collect data even though the target site is prohibiting crawlers by robot.txt. Some web services try to detect and prevent crawlers by anti-crawler methods but these malicious web-crawlers bypass detection by modifying their header values or distributing IPs to masquerade as if they are normal users.
 It is a matter of availability and data property issue because even though any service allows users to access each data, it is prohibited to duplicate the entire dataset. And malicious web-crawlers can cause significant traffic and intellectual property infringement by collecting the entire data from web services. This can cause a serious impact on the availability of the target service.
-In this paper, we investigate the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot stop distributed crawlers. Then we propose the new anti-crawling technique that we call 'node-reducing' which gradually adds the distributed crawler node IPs to the block-list.
+In this paper, we investigate the conventional anti-crawling methods and its countermeasures, and show that the conventional anti-crawling methods cannot stop distributed crawlers. Then we propose the new anti-crawling technique that we call LTM(Long-tail Threshold Model) which gradually adds the distributed crawler node IPs to the block-list.
 
 %
 % Back Ground
@@ -110,17 +110,17 @@ In this section, we will summarize conventional anti-crawling methods and their 
 
 \begin{itemize}
 \item HTTP Header Check\newline
-A basic crawler will send requests without modification on its header information. Web servers can distinguishes a legitimate user from a crawler by checking the request header, especially if the User-Agent value has been set properly. This header checking method is a basic anti-crawling method.
+A basic crawler will send requests without modification on its header information. Web servers can distinguishes a legitimate user from a crawler by checking the request header, especially if the User-Agent value has been set properly. This header checking method is a basic anti-crawling method[10].
 However if a crawler attempts to masquerade itself as a legitimate user, it will replay the header information from the web browser or form the http header information similar to a browser. This makes it difficult for a web server to determine whether a client is a crawler or a legitimate user by simply checking the request header.
 
 \item Access Pattern based Anti-Crawling\newline
 Access pattern based anti-crawling is a method of classifying legitimate users and crawlers based on the pattern requested by the client. If a client requests only a specific resource continuously without a call to a resource that should normally be requested, the client will be regarded as a crawler. 
 A crawler performing an aggressive crawling predefines the core data that the crawler wants to collect, and requests specific data without requesting unnecessary resources. In this case, the web server can recognize that the client is not a legitimate user.
-In the case of a web service using access pattern recognition, the service analyzes the pattern when a normal user accesses through the UI. If some requests have a significant difference from this pattern, the service classifies it as a crawler[9].
-Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs.[8]
+In the case of a web service using access pattern recognition, the service analyzes the pattern when a normal user accesses through the UI. If some requests have a significant difference from this pattern, the service classifies it as a crawler[10].
+Although this approach can recognize a crawler based on access pattern, some crawlers even masquerade their access pattern by analyzing network logs[4].
 
 \item Access Frequency based Anti-Crawling\newline
-Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold, the maximum number of access in a specific time window. If a client issues requests more than this threshold within the pre-defined time, the web server determines that the client as a crowler.
+Access frequency based anti-crawling is a method that determines a client is whether a crawler or a legitimate user by access frequency rate. A web server can set a threshold, the maximum number of access in a specific time window. If a client issues requests more than this threshold within the pre-defined time, the web server determines that the client as a crowler[4].
 
 This method has two well-known problems. 
 First, it has a vulnerability against distributed crawlers. If an attackers use distributed crawlers such as Crawlera, the access rate of each crawler node can be managed enough to stay lower than the threshold.
