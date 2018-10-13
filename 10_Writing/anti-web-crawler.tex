@@ -39,6 +39,7 @@
 
 
 \begin{document}
+
 \title{Detection Methods for Distributed Web-Crawlers: Long-tail Threshold Model}
 %\titlenote{Produces the permission block, and copyright information}
 
@@ -81,6 +82,28 @@
 
 % The default list of authors is too long for headers.
 %\renewcommand{\shortauthors}{B. Trovato et al.}
+
+\begin{itemize}
+\item Overall the paper is well written and organized.
+\item Either in abstract or Section 1, the authors should provide the metrics that have been improved by their proposed technique, merely stating that the proposed technique has better detection rate is not sufficient.
+\item The paper organization paragraph is missing from Section 1, authors should add it.
+
+\item The paper is based on the assumption that "distributed crawlers can bypass conventional anti-crawling methods", however, how it happens is not specified in the paper. The motivation of the paper should be clear and highlighted in Section 1.
+\item Equations should be numbered.
+\item What is the significance of Section 3.4 in this paper?
+\item Details of the tools used for the experimentation process should be added in Section 4.
+\item Authors should include a Receiver Operating Characteristic (ROC) curve to show the accuracy of their algorithm.
+\end{itemize}
+
+\begin{itemize}
+\item For the readers, the statement "A competing company may copy the entire data provided in a web server, and the competing company may provide similar services to clients" is misleading. If the data is sensitive, then how can someone copy/access it without authorization. But, if it is public, then manually navigating each page might not be an issue for the rival company's employee.
+\item The formula presented in Section 3.1 "Required Number of Crawler Nodes" has no reference? Where does the constant "30" come from?
+\item The dataset used in the experiments is more than 20 years old. Why have the authors not used a newer dataset?
+\item Please explain the contents of Table 1. "Number/mean of Long-tail" makes no clear meaning. Is there any unit for the numbers mentioned in this table?
+\item Similarly, please discuss the content of Table 2.
+\item Section 4.2 could have been restructured for better presentation of approach. E.g., Figure 6 and its description should have appeared before elucidating the experiments.
+\item What about defending against the crawlers using the captcha? Try to crawl some online shopping sites, e.g., Amazon (the reviewer does not endorse any website whatsoever), and try the proposed approach there.
+\end{itemize}
 
 
 \begin{abstract}
