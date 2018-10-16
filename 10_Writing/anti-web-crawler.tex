@@ -85,14 +85,31 @@
 
 \begin{itemize}
 \item Overall the paper is well written and organized.
+\subitem pass
+
 \item Either in abstract or Section 1, the authors should provide the metrics that have been improved by their proposed technique, merely stating that the proposed technique has better detection rate is not sufficient.
+\subitem I will add explanation to Section 1 that how LTM operate. 
+
 \item The paper organization paragraph is missing from Section 1, authors should add it.
+\subitem Trying to understand what is the paper organization paragraph
 
 \item The paper is based on the assumption that "distributed crawlers can bypass conventional anti-crawling methods", however, how it happens is not specified in the paper. The motivation of the paper should be clear and highlighted in Section 1.
+\subitem In Section 2, authors described about three conventional anti-crawling methods; HTTP header check, Access Pattern Based Anti-Crawling, Access Frequency based Anti-Crawling, and describes how distributed crawler can bypass them. 
+\subitem I agree with the review that these motivation should be highligted in Setion 1. I will add overview version of Section 2 in the end of Section 1.
+
 \item Equations should be numbered.
+\subitem I will add number index to each equations.
+
 \item What is the significance of Section 3.4 in this paper?
+\subitem Section 3.4 describes further idea of anti-crawling scenario. Since it is indepent part from the main idea, it is still useful to combine with LTM method.
+
 \item Details of the tools used for the experimentation process should be added in Section 4.
+\subitem I will add more detailed process in Section 4.
+
 \item Authors should include a Receiver Operating Characteristic (ROC) curve to show the accuracy of their algorithm.
+\subitem The experiments in this paper has been done until every crawler nodes are captured. Hence there is no false-negative.
+\subitem It is possible to show ROC curve with zero false negative but I think it is worthless.
+\subitem I understand that it is unusual way to not including false-negative and ROC curve. I will describe the reason about why there is no false-negative and ROC curve.
 \end{itemize}
 
 \begin{itemize}
